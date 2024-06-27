@@ -1,0 +1,49 @@
+{
+  "project_info": {
+    "project_number": "932751065191",
+    "firebase_url": "https://clarazone-c0cfe-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "clarazone-c0cfe",
+    "storage_bucket": "clarazone-c0cfe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932751065191:android:069b96dbd529e77527d4c2",
+        "android_client_info": {
+          "package_name": "com.hoyo.clarazone"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkaefV2OQkF0yL1HKAwdCKbPtun-WQdYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:932751065191:android:2f4b2f1ee83cb85027d4c2",
+        "android_client_info": {
+          "package_name": "com.hoyo.cz"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkaefV2OQkF0yL1HKAwdCKbPtun-WQdYU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
