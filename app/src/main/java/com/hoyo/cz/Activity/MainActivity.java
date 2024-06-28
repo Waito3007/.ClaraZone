@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         // Kiểm tra nếu người dùng cần phải đăng ký
         if (needsSignUp()) {
             // Chuyển hướng đến SignUpActivity
-            Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
+            Intent intent = new Intent(MainActivity.this, PostActivity.class);
             startActivity(intent);
             finish(); // Kết thúc MainActivity để người dùng không thể quay lại
             return; // Thoát khỏi phương thức onCreate

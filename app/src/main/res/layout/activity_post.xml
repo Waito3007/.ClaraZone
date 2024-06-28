@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <LinearLayout
+            android:id="@+id/thanh_ngang"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btback"
+                android:layout_width="50dp"
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/baseline_arrow_back_ios_new_24"
+                android:textColor="#FFFAFA" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tạo bài viết"
+                android:textSize="14sp"></TextView>
+
+            <!-- Button to Post -->
+            <Button
+                android:id="@+id/post_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="170dp"
+                android:background="@drawable/corner_button"
+                android:text="ĐĂNG"
+                android:textColor="@android:color/white" />
+
+        </LinearLayout>
+
+        <!-- EditText for Title -->
+
+        <!-- Image Preview -->
+        <LinearLayout
+            android:id="@+id/anh_tenuser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="horizontal">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                app:cardCornerRadius="25dp"
+                app:cardElevation="4dp"
+                android:layout_weight="1">
+
+                <ImageView
+                    android:id="@+id/avatar_user"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/avatar_macdinh"
+                    android:scaleType="centerCrop"/>
+            </androidx.cardview.widget.CardView>
+
+
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_weight="1"
+                    android:text="Tên Người Dùng" />
+
+                <CheckBox
+                    android:id="@+id/checkbox_privacy"
+                    android:layout_width="100dp"
+                    android:layout_height="50dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Riêng Tư" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/editTextTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Bạn đang nghĩ gì?"
+            android:padding="12dp"
+            android:background="@drawable/edittext_background"
+            android:layout_margin="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="16sp"
+            android:textColorHint="@android:color/darker_gray"
+            android:textCursorDrawable="@drawable/cursor"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minHeight="48dp"/>
+
+
+
+        <ImageView
+            android:id="@+id/image_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:visibility="gone" />
+
+        <!-- Video Preview -->
+        <VideoView
+            android:id="@+id/video_preview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:visibility="gone" />
+
+        <!-- Button to Choose Media -->
+        <Button
+            android:id="@+id/choosemedia_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/corner_button"
+            android:drawableLeft="@drawable/image_svgrepo_com"
+            android:text="Thêm ảnh" />
+
+        <!-- EditText for Content -->
+        <EditText
+            android:id="@+id/edit_text_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Content"
+            android:padding="10dp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+</ScrollView>
