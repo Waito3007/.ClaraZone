@@ -26,7 +26,7 @@ public class SignUpActivity extends AppCompatActivity {
 
     private EditText edEmail, edPassword, edConfirmPassword;
     private Button btSignup, btBack;
-    private TextView tvGreentoon;
+    private TextView tvCz;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
     private boolean isAdminConfirmationEnabled = false;
@@ -37,15 +37,12 @@ public class SignUpActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference("users");
-
+        databaseReference = FirebaseDatabase.getInstance().getReference("account");
         edEmail = findViewById(R.id.edEmail);
         edPassword = findViewById(R.id.edPassword);
         edConfirmPassword = findViewById(R.id.edConfirmPassword);
         btSignup = findViewById(R.id.btSignup);
-
         btSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -70,8 +67,8 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         // Lắng nghe sự kiện khi TextView được nhấn
-        TextView tvGreentoon = findViewById(R.id.tvGreentoon);
-        tvGreentoon.setOnClickListener(new View.OnClickListener() {
+        TextView tvCz = findViewById(R.id.tvCz);
+        tvCz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Tăng giá trị của biến đếm

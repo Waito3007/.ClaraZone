@@ -1,7 +1,7 @@
 package com.hoyo.cz.Model;
 
 public class Account {
-    private String userId;
+    private String uid;
     private String email;
     private String password;
     private String avatarUser;
@@ -17,14 +17,13 @@ public class Account {
         return nameUser;
     }
     public Account(String userId, String email) {
-        this.userId = userId;
+        this.uid = userId;
         this.email = email;
         this.password= password;
 
     }
-
     public String getUserId() {
-        return userId;
+        return uid;
     }
     public String getEmail() {
         return email;
