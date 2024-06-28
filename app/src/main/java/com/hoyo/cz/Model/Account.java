@@ -22,7 +22,6 @@ public class Account {
         this.password= password;
 
     }
-
     public String getUserId() {
         return userId;
     }
