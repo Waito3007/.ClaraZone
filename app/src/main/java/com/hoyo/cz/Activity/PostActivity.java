@@ -61,7 +61,6 @@ public class PostActivity extends AppCompatActivity {
         checkboxPrivacy = findViewById(R.id.checkbox_privacy);
         btnBack = findViewById(R.id.btback);
 
-
         databaseReference = FirebaseDatabase.getInstance().getReference("posts");
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -75,15 +74,13 @@ public class PostActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Picture or Video"), PICK_MEDIA_REQUEST);
             }
         });
-        //code back ve trang truoc
-        btnBack = findViewById(R.id.btback);
+
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                finish(); // Đóng SignInActivity và trở về fragment_profile
+                finish(); // Đóng PostActivity và trở về màn hình trước đó
             }
         });
-
 
         buttonPost.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +90,7 @@ public class PostActivity extends AppCompatActivity {
                 boolean status = checkboxPrivacy.isChecked();
                 String timestamp = getCurrentTimestamp();
 
-                // Kiểm tra điều kiện sao cho ít nhất một trong hai trường không được rỗng
+                // Kiểm tra điều kiện: ít nhất một trong hai trường không được rỗng
                 if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(content)) {
                     createPost(title, content, timestamp, status);
                 } else {
@@ -101,59 +98,43 @@ public class PostActivity extends AppCompatActivity {
                 }
             }
         });
-
-
     }
 
-    /*private void createPost(String title, String content, String timestamp, boolean status) {
-        String postId = databaseReference.push().getKey();
-        String userId = firebaseAuth.getCurrentUser().getUid();
-
-        Post post = new Post(postId, userId, title, content, timestamp, status, 0, null);
-
-        // Lưu post vào Firebase Database
-        databaseReference.child(postId).setValue(post)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(PostActivity.this, "Post successful", Toast.LENGTH_SHORT).show();
-                            finish(); // Đóng activity sau khi đăng bài
-                        } else {
-                            Toast.makeText(PostActivity.this, "Post failed", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                });
-    }*/
-    // Đoạn mã trong hàm createPost()
+    // Hàm tạo bài viết mới và lưu vào Firebase Database
     private void createPost(String title, String content, String timestamp, boolean status) {
         String postId = databaseReference.push().getKey();
-        String defaultUid = "Nghiahehe"; // Thay thế bằng UID mặc định của bạn
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
-        Post post = new Post(postId, defaultUid, title, content, timestamp, status, 0, null);
+        if (currentUser != null) {
+            String userId = currentUser.getUid();
+            Post post = new Post(postId, userId, title, content, timestamp, status, 0);
 
-        // Lưu post vào Firebase Database
-        databaseReference.child(postId).setValue(post)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(PostActivity.this, "Post successful", Toast.LENGTH_SHORT).show();
-                            finish(); // Đóng activity sau khi đăng bài
-                        } else {
-                            Toast.makeText(PostActivity.this, "Post failed", Toast.LENGTH_SHORT).show();
+            // Lưu post vào Firebase Database
+            databaseReference.child(postId).setValue(post)
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(PostActivity.this, "Post successful", Toast.LENGTH_SHORT).show();
+                                finish(); // Đóng activity sau khi đăng bài
+                            } else {
+                                Toast.makeText(PostActivity.this, "Post failed", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+        } else {
+            Toast.makeText(PostActivity.this, "User not logged in", Toast.LENGTH_SHORT).show();
+        }
     }
 
-
-
+    // Hàm lấy timestamp hiện tại dưới định dạng yyyyMMdd_HHmmss
     private String getCurrentTimestamp() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("h'g' m'p' 'ngày' d/M/yyyy", Locale.getDefault());
         return sdf.format(new Date());
     }
 
+
+    // Xử lý kết quả chọn media từ Intent
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -173,5 +154,4 @@ public class PostActivity extends AppCompatActivity {
             }
         }
     }
-
 }
