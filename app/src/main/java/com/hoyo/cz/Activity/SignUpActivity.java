@@ -149,24 +149,22 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Lưu thông tin người dùng vào Realtime Database
                             FirebaseUser user = mAuth.getCurrentUser();
                             String userId = user.getUid();
-                            String userName = email; // Đặt userName mặc định là email
+                            String userName = email;
+
                             Account userData = new Account(userId, email);
                             userData.setAvatarUser("https://firebasestorage.googleapis.com/v0/b/greentoon-937f6.appspot.com/o/avatars%2FGwdz6c6FAjYLKfDC3LlwaWyGWg12.jpg?alt=media&token=29a002c7-f96e-4b4c-8d96-6108ccfa6f68");
-                            userData.setNameUser(userName); // Lưu userName vào dữ liệu người dùng
+                            userData.setNameUser(userName);
 
-                            // Kiểm tra xem người dùng có phải là admin không
                             if (email.equals(userEmail)) {
-                                userData.setAdmin(true); // Đánh dấu người dùng là admin
+                                userData.setAdmin(true);
                             } else {
                                 userData.setAdmin(false);
                             }
 
                             databaseReference.child(userId).setValue(userData);
 
-                            // Kiểm tra nếu địa chỉ email là của Admin, gửi email xác nhận
                             if (email.equals(userEmail)) {
                                 sendAdminConfirmationEmail(userEmail);
                             } else {
@@ -187,13 +185,12 @@ public class SignUpActivity extends AppCompatActivity {
                 });
     }
 
-
     private void sendVerificationEmail() {
         FirebaseUser user = mAuth.getCurrentUser();
         if (user != null) {
             String userId = user.getUid();
             String userEmail = user.getEmail();
-            // Lưu thông tin người dùng vào Realtime Database
+
             Account userData = new Account(userId, userEmail);
             userData.setAvatarUser("https://firebasestorage.googleapis.com/v0/b/greentoon-937f6.appspot.com/o/avatars%2FGwdz6c6FAjYLKfDC3LlwaWyGWg12.jpg?alt=media&token=29a002c7-f96e-4b4c-8d96-6108ccfa6f68");
             userData.setNameUser(user.getEmail());
@@ -213,6 +210,7 @@ public class SignUpActivity extends AppCompatActivity {
                     });
         }
     }
+
     private boolean isPasswordValid(String password) {
         // Kiểm tra mật khẩu có ít nhất 8 kí tự và chứa kí tự đặc biệt hay không
         return password.length() >= 8 && !password.matches("[a-zA-Z0-9 ]*");
