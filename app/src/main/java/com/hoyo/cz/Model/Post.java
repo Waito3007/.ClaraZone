@@ -1,107 +1,91 @@
 package com.hoyo.cz.Model;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class Post {
-    private String Pid;
-    private String Uid;
-    private String TitleP;
-    private String ContentP;
-    private String DayupP;
-    private boolean StatusP;
-    private int LikeP;
-    private String MediaUrl;
+    private String pid;
+    private String uid;
+    private String titleP;
+    private String contentP;
+    private String dayupP;
+    private boolean statusP;
+    private int likeP;
+    private String mediaUrl;
 
-    // Constructor
-    public Post(String Pid, String Uid, String TitleP, String ContentP, String DayupP, boolean StatusP, int LikeP, String MediaUrl) {
-        this.Pid = Pid;
-        this.Uid = Uid;
-        this.TitleP = TitleP;
-        this.ContentP = ContentP;
-        this.DayupP = DayupP;
-        this.StatusP = StatusP;
-        this.LikeP = LikeP;
-        this.MediaUrl = MediaUrl;
+
+    // Constructor mặc định (cần thiết cho Firebase)
+    public Post() {}
+
+    // Constructor với các tham số khác
+    public Post(String pid, String uid, String titleP, String contentP, String dayupP, boolean statusP, int likeP) {
+        this.pid = pid;
+        this.uid = uid;
+        this.titleP = titleP;
+        this.contentP = contentP;
+        this.dayupP = dayupP;
+        this.statusP = statusP;
+        this.likeP = likeP;
     }
 
-    // Method to convert Post object to a map for Firebase Database
-    public Map<String, Object> toMap() {
-        HashMap<String, Object> result = new HashMap<>();
-        result.put("Pid", Pid);
-        result.put("Uid", Uid);
-        result.put("TitleP", TitleP);
-        result.put("ContentP", ContentP);
-        result.put("DayupP", DayupP);
-        result.put("StatusP", StatusP);
-        result.put("LikeP", LikeP);
-        result.put("MediaUrl", MediaUrl);
-
-        return result;
-    }
-
-    // Getters and setters (if needed)
+    // Getters và Setters
     public String getPid() {
-        return Pid;
+        return pid;
     }
 
-    public void setPid(String Pid) {
-        this.Pid = Pid;
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
     public String getUid() {
-        return Uid;
+        return uid;
     }
 
-    public void setUid(String Uid) {
-        this.Uid = Uid;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getTitleP() {
-        return TitleP;
+        return titleP;
     }
 
-    public void setTitleP(String TitleP) {
-        this.TitleP = TitleP;
+    public void setTitleP(String titleP) {
+        this.titleP = titleP;
     }
 
     public String getContentP() {
-        return ContentP;
+        return contentP;
     }
 
-    public void setContentP(String ContentP) {
-        this.ContentP = ContentP;
+    public void setContentP(String contentP) {
+        this.contentP = contentP;
     }
 
     public String getDayupP() {
-        return DayupP;
+        return dayupP;
     }
 
-    public void setDayupP(String DayupP) {
-        this.DayupP = DayupP;
+    public void setDayupP(String dayupP) {
+        this.dayupP = dayupP;
     }
 
     public boolean isStatusP() {
-        return StatusP;
+        return statusP;
     }
 
-    public void setStatusP(boolean StatusP) {
-        this.StatusP = StatusP;
+    public void setStatusP(boolean statusP) {
+        this.statusP = statusP;
     }
 
     public int getLikeP() {
-        return LikeP;
+        return likeP;
     }
 
-    public void setLikeP(int LikeP) {
-        this.LikeP = LikeP;
+    public void setLikeP(int likeP) {
+        this.likeP = likeP;
     }
 
     public String getMediaUrl() {
-        return MediaUrl;
+        return mediaUrl;
     }
-
-    public void setMediaUrl(String MediaUrl) {
-        this.MediaUrl = MediaUrl;
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
     }
 }

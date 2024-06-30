@@ -1,6 +1,10 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="rectangle">
-    <corners android:radius="25dp"/>
-    <solid android:color="@android:color/transparent"/>
-</shape>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="100dp"
+    android:height="100dp"
+    android:viewportWidth="100"
+    android:viewportHeight="100">
+    <group>
+        <clip-path android:pathData="M50,0 a50,50 0 1,0 0.1,0"/>
+        <path android:fillColor="#FFFFFF" android:pathData="M0,0h100v100H0z"/>
+    </group>
+</vector>
