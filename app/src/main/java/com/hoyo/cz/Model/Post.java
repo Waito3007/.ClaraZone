@@ -8,7 +8,7 @@ public class Post {
     private String dayupP;
     private boolean statusP;
     private int likeP;
-    private String mediaUrl; // Thêm thuộc tính để lưu URL của phương tiện
+    private String mediaUrl;
 
 
     // Constructor mặc định (cần thiết cho Firebase)
