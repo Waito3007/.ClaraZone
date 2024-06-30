@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -85,13 +86,12 @@ public class PostActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String title = editTextTitle.getText().toString().trim();
-                String content = mediaUri != null ? mediaUri.toString() : null;
                 boolean status = checkboxPrivacy.isChecked();
                 String timestamp = getCurrentTimestamp();
 
                 // Kiểm tra điều kiện: ít nhất một trong hai trường không được rỗng
-                if (!TextUtils.isEmpty(title) || !TextUtils.isEmpty(content)) {
-                    createPost(title, content, timestamp, status);
+                if (!TextUtils.isEmpty(title) || mediaUri != null) {
+                    uploadMediaToFirebase(title, timestamp, status);
                 } else {
                     Toast.makeText(PostActivity.this, "Please provide a title or select media", Toast.LENGTH_SHORT).show();
                 }
@@ -99,14 +99,47 @@ public class PostActivity extends AppCompatActivity {
         });
     }
 
+    // Hàm tải media lên Firebase Storage và lưu thông tin bài viết vào Firebase Database
+    private void uploadMediaToFirebase(String title, String timestamp, boolean status) {
+        if (mediaUri != null) {
+            // Tạo tên tệp tin dựa trên thời gian hiện tại
+            String fileName = System.currentTimeMillis() + "." + getFileExtension(mediaUri);
+            StorageReference fileReference = storageReference.child("posts/" + fileName);
+
+            fileReference.putFile(mediaUri)
+                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()) {
+                                fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Uri> task) {
+                                        if (task.isSuccessful()) {
+                                            String mediaUrl = task.getResult().toString();
+                                            createPost(title, mediaUrl, timestamp, status);
+                                        } else {
+                                            Toast.makeText(PostActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                Toast.makeText(PostActivity.this, "Media upload failed", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        } else {
+            createPost(title, null, timestamp, status);
+        }
+    }
+
     // Hàm tạo bài viết mới và lưu vào Firebase Database
-    private void createPost(String title, String content, String timestamp, boolean status) {
+    private void createPost(String title, String mediaUrl, String timestamp, boolean status) {
         String postId = databaseReference.push().getKey();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
 
         if (currentUser != null) {
             String userId = currentUser.getUid();
-            Post post = new Post(postId, userId, title, content, timestamp, status, 0);
+            Post post = new Post(postId, userId, title, mediaUrl, timestamp, status, 0);
 
             // Lưu post vào Firebase Database
             databaseReference.child(postId).setValue(post)
@@ -114,7 +147,6 @@ public class PostActivity extends AppCompatActivity {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(PostActivity.this, "Post successful", Toast.LENGTH_SHORT).show();
                                 finish(); // Đóng activity sau khi đăng bài
                             } else {
                                 Toast.makeText(PostActivity.this, "Post failed", Toast.LENGTH_SHORT).show();
@@ -126,12 +158,19 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
-    // Hàm lấy timestamp hiện tại dưới định dạng yyyyMMdd_HHmmss
+    // Hàm lấy timestamp hiện tại dưới định dạng h'p' m' ngày' d/M/yyyy
     private String getCurrentTimestamp() {
-        SimpleDateFormat sdf = new SimpleDateFormat("h'g' m'p' 'ngày' d/M/yyyy", Locale.getDefault());
+        SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
         return sdf.format(new Date());
     }
 
+    // Hàm lấy phần mở rộng của tệp tin
+    private String getFileExtension(Uri uri) {
+        String extension;
+        // Lấy phần mở rộng của tệp tin
+        extension = uri.getPath().substring(uri.getPath().lastIndexOf(".") + 1);
+        return extension;
+    }
 
     // Xử lý kết quả chọn media từ Intent
     @Override
