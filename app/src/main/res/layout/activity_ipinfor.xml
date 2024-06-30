@@ -9,28 +9,28 @@
         android:id="@+id/ivAvatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
+        android:layout_gravity="center"
         android:layout_marginBottom="16dp"
-        android:background="@color/white"
-        android:scaleType="centerCrop"
-        android:src="@drawable/avatar_macdinh"
-        android:layout_gravity="center_horizontal"
-    />
-
-    <TextView
-        android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="Username"
-        android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-    />
+        android:src="@drawable/avatar_macdinh" />
 
     <Button
-        android:id="@+id/btlogout"
+        android:id="@+id/btChooseAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Chọn Avatar" />
+
+    <EditText
+        android:id="@+id/edUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Đăng xuất" />
+        android:layout_marginTop="16dp"
+        android:hint="Nhập tên người dùng" />
 
+    <Button
+        android:id="@+id/btSave"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Lưu" />
 </LinearLayout>
