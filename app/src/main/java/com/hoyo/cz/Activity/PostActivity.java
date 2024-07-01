@@ -169,39 +169,6 @@ public class PostActivity extends AppCompatActivity {
         }
     }
 
-    // Hàm tải media lên Firebase Storage và lưu thông tin bài viết vào Firebase Database
-    private void uploadMediaToFirebase(String title, String timestamp, boolean status) {
-        if (mediaUri != null) {
-            // Tạo tên tệp tin dựa trên thời gian hiện tại
-            String fileName = System.currentTimeMillis() + "." + getFileExtension(mediaUri);
-            StorageReference fileReference = storageReference.child("posts/" + fileName);
-
-            fileReference.putFile(mediaUri)
-                    .addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                            if (task.isSuccessful()) {
-                                fileReference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Uri> task) {
-                                        if (task.isSuccessful()) {
-                                            String mediaUrl = task.getResult().toString();
-                                            createPost(title, mediaUrl, timestamp, status);
-                                        } else {
-                                            Toast.makeText(PostActivity.this, "Failed to get download URL", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
-                            } else {
-                                Toast.makeText(PostActivity.this, "Media upload failed", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    });
-        } else {
-            createPost(title, null, timestamp, status);
-        }
-    }
-
     // Hàm tạo bài viết mới và lưu vào Firebase Database
     private void createPost(String title, String mediaUrl, String timestamp, boolean status) {
         String postId = databaseReference.push().getKey();
