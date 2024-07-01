@@ -42,7 +42,7 @@
 
         </LinearLayout>
 
-        <TextView
+        <ImageView
             android:id="@+id/menuOptions"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,7 +51,8 @@
             android:background="#FDF6FE"
             android:backgroundTint="#FDF6FE"
             android:contentDescription="Menu Options"
-            android:drawableRight="@drawable/list_option_menu" />
+            android:src="@drawable/list_option_menu" />
+
     </LinearLayout>
 
     <TextView
@@ -87,8 +88,7 @@
             android:layout_weight="1"
             android:drawableLeft="@drawable/ic_heart_white"
             android:text="Thích"
-            android:textAllCaps="false" />
-
+            android:textAllCaps="false"/>
         <Button
             android:id="@+id/btnComment"
             android:layout_width="wrap_content"

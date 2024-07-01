@@ -12,21 +12,18 @@
         android:layout_gravity="center"
         android:layout_marginBottom="16dp"
         android:src="@drawable/avatar_macdinh" />
-
     <Button
         android:id="@+id/btChooseAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Chọn Avatar" />
-
     <EditText
         android:id="@+id/edUserName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:hint="Nhập tên người dùng" />
-
     <Button
         android:id="@+id/btSave"
         android:layout_width="match_parent"

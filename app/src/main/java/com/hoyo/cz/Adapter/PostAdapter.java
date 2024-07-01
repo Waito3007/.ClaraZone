@@ -10,15 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hoyo.cz.Fragment.OptionsFragment;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.Model.Post;
 import com.hoyo.cz.R;
@@ -78,6 +81,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             .placeholder(R.drawable.placeholder_image)
                             .error(R.drawable.error_image)
                             .into(holder.imageViewUserAvatar);
+
+                    // Hiển thị menuOptions cho người dùng đăng bài
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null &&
+                            FirebaseAuth.getInstance().getCurrentUser().getUid().equals(post.getUid())) {
+                        holder.menuOptions.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.menuOptions.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -94,7 +105,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.btnComment.setOnClickListener(v -> {
             // Xử lý sự kiện khi nhấn nút Bình luận
         });
+
+        holder.menuOptions.setOnClickListener(v -> {
+            OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
+            optionsFragment.show(((FragmentActivity) context).getSupportFragmentManager(), "OptionsFragment");
+        });
     }
+
 
     @Override
     public int getItemCount() {
@@ -104,7 +121,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewUserAvatar;
         TextView nameUser, dayPost, title;
-        ImageView content;
+        ImageView content,menuOptions;
         Button btnLike, btnComment;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -116,6 +133,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             content = itemView.findViewById(R.id.content);
             btnLike = itemView.findViewById(R.id.btnLike);
             btnComment = itemView.findViewById(R.id.btnComment);
+            menuOptions = itemView.findViewById(R.id.menuOptions);
         }
     }
 }
