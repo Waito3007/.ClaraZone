@@ -56,13 +56,11 @@ public class MainActivity extends AppCompatActivity {
                         initMainActivity();
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {}
             });
         }
     }
-
     private void initMainActivity() {
         setContentView(R.layout.activity_main);
         if (getSupportActionBar() != null) {
@@ -74,7 +72,6 @@ public class MainActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 Fragment selectedFragment = null;
                 int itemId = item.getItemId();
-
                 if (itemId == R.id.nav_home) {
                     selectedFragment = new HomeFragment();
                 } else if (itemId == R.id.nav_search) {
