@@ -18,6 +18,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CZ"
         tools:targetApi="31">
+
+        <activity
+            android:name=".Activity.PostDetailActivity"
+            android:exported="false" />
         <activity
             android:name=".Activity.DeletePostActivity"
             android:exported="false" />
@@ -47,6 +51,10 @@
         </activity>
         <activity android:name=".Activity.SignUpActivity" />
         <activity android:name=".Activity.PostActivity" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

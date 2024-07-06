@@ -55,16 +55,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="4dp"
+                android:layout_weight="1"
                 app:cardCornerRadius="25dp"
-                app:cardElevation="4dp"
-                android:layout_weight="1">
+                app:cardElevation="4dp">
 
                 <ImageView
                     android:id="@+id/avatar_user"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:src="@drawable/avatar_macdinh"
-                    android:scaleType="centerCrop"/>
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/avatar_macdinh" />
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
@@ -95,16 +95,16 @@
             android:id="@+id/editTextTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Bạn đang nghĩ gì?"
-            android:padding="12dp"
-            android:background="@drawable/edittext_background"
             android:layout_margin="8dp"
+            android:background="@drawable/edittext_background"
+            android:hint="Bạn đang nghĩ gì?"
+            android:inputType="textCapSentences|textMultiLine"
+            android:minHeight="48dp"
+            android:padding="12dp"
             android:textColor="@android:color/black"
-            android:textSize="16sp"
             android:textColorHint="@android:color/darker_gray"
             android:textCursorDrawable="@drawable/cursor"
-            android:inputType="textCapSentences|textMultiLine"
-            android:minHeight="48dp"/>
+            android:textSize="16sp" />
 
         <ImageView
             android:id="@+id/image_preview"

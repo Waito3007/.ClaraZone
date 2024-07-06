@@ -1,0 +1,8 @@
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Icon khi không được chọn -->
+    <item android:state_checked="false"
+        android:drawable="@drawable/home" />
+    <!-- Icon khi được chọn -->
+    <item android:state_checked="true"
+        android:drawable="@drawable/onhome" />
+</selector>
