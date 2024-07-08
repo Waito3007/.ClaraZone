@@ -87,6 +87,7 @@ public class Post implements Serializable {
     public String getMediaUrl() {
         return mediaUrl;
     }
+
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
     }
