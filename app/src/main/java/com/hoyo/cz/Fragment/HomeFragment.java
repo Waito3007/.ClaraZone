@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -65,9 +66,14 @@ public class HomeFragment extends Fragment {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 postList.clear();
+                String currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     Post post = dataSnapshot.getValue(Post.class);
-                    postList.add(post);
+                    if(post != null) {
+                        if (!post.isStatusP() || post.getUid().equals(currentUserID)) {
+                            postList.add(post);
+                        }
+                    }
                 }
                 postAdapter.notifyDataSetChanged();
             }

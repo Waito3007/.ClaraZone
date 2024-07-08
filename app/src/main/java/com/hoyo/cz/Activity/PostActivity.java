@@ -168,12 +168,10 @@ public class PostActivity extends AppCompatActivity {
             createPost(title, null, timestamp, status);
         }
     }
-
     // Hàm tạo bài viết mới và lưu vào Firebase Database
     private void createPost(String title, String mediaUrl, String timestamp, boolean status) {
         String postId = databaseReference.push().getKey();
         FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-
         if (currentUser != null) {
             String userId = currentUser.getUid();
             Post post = new Post(postId, userId, title, mediaUrl, timestamp, status, 0);
@@ -216,7 +214,6 @@ public class PostActivity extends AppCompatActivity {
 
         if (requestCode == PICK_MEDIA_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
             mediaUri = data.getData();
-
             if (mediaUri.toString().contains("image")) {
                 imagePreview.setVisibility(View.VISIBLE);
                 imagePreview.setImageURI(mediaUri);

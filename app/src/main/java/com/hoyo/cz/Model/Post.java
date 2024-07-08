@@ -11,8 +11,6 @@ public class Post implements Serializable {
     private boolean statusP;
     private int likeP;
     private String mediaUrl;
-
-
     // Constructor mặc định (cần thiết cho Firebase)
     public Post() {}
 
@@ -87,6 +85,7 @@ public class Post implements Serializable {
     public String getMediaUrl() {
         return mediaUrl;
     }
+
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
     }

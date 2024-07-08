@@ -40,7 +40,7 @@
             android:layout_height="match_parent"
             android:layout_marginRight="20dp"
             android:layout_weight="0.1"
-            android:src="@drawable/search_ic"
+            android:src="@drawable/search"
             android:visibility="gone" />
     </LinearLayout>
 

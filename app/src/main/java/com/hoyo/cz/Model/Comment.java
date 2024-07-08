@@ -11,7 +11,6 @@ public class Comment {
 
     public Comment() {
     }
-
     public Comment(String cid, String uid, String pid, String daycm, String contentCm, List<String> imageCmt) {
         this.cid = cid;
         this.uid = uid;
@@ -20,7 +19,6 @@ public class Comment {
         this.contentCm = contentCm;
         this.imageCmt = imageCmt;
     }
-
     public String getCid() {
         return cid;
     }
