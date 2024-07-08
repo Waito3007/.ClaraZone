@@ -34,11 +34,13 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     private Context context;
     private List<Post> postList;
+    private String currentUserID;
     private DatabaseReference accountsRef;
 
     public PostAdapter(Context context, List<Post> postList) {
         this.context = context;
         this.postList = postList;
+        this.currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         this.accountsRef = FirebaseDatabase.getInstance().getReference("account");
     }
 
