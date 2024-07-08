@@ -52,10 +52,8 @@ public class HomeFragment extends Fragment {
             Intent intent = new Intent(getActivity(), PostActivity.class);
             startActivity(intent);
         });
-
         return view;
     }
-
     private void loadPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
         reference.addValueEventListener(new ValueEventListener() {

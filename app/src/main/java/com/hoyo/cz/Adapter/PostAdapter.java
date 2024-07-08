@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,6 +31,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.hoyo.cz.Activity.PostDetailActivity;
 import com.hoyo.cz.Fragment.OptionsFragment;
 import com.hoyo.cz.Model.Account;
+import com.hoyo.cz.Model.Follow;
 import com.hoyo.cz.Model.Like;
 import com.hoyo.cz.Model.Post;
 import com.hoyo.cz.R;
@@ -45,6 +47,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     private final List<Post> postList;
     private final DatabaseReference accountsRef;
     private final DatabaseReference likesRef;
+    private final DatabaseReference followRef;
     private final FirebaseUser currentUser;
 
     public PostAdapter(Context context, List<Post> postList) {
@@ -52,6 +55,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         this.postList = postList;
         this.accountsRef = FirebaseDatabase.getInstance().getReference("account");
         this.likesRef = FirebaseDatabase.getInstance().getReference("like");
+        this.followRef = FirebaseDatabase.getInstance().getReference("follow");
         this.currentUser = FirebaseAuth.getInstance().getCurrentUser();
     }
 
@@ -87,6 +91,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         //chuc nang like bai viet
         handleLikeStatus(holder, post);
+
+        //chuc nang follow bai viet
+        handleFollowStatus(holder, post);
 
         holder.btnComment.setOnClickListener(v -> {
             // Xử lý sự kiện khi nhấn nút Bình luận
@@ -196,6 +203,69 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
+    private void handleFollowStatus(PostViewHolder holder, Post post) {
+        if (currentUser == null) {
+            return; // Người dùng chưa đăng nhập
+        }
+
+        String followingId = post.getUid(); // ID của người đang đăng bài
+        String uid = currentUser.getUid(); // ID của người đang đăng nhập
+
+        Query followQuery = followRef.orderByChild("followingId").equalTo(followingId);
+        followQuery.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                boolean[] isFollowing = {false};
+                String[] followId = {null};
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Follow follow = ds.getValue(Follow.class);
+                    if (follow != null && follow.getUid().equals(uid)) {
+                        isFollowing[0] = follow.isStatusF();
+                        followId[0] = follow.getFid();
+                        break;
+                    }
+                }
+
+                updateFollowButton(holder.btnFollow, isFollowing[0]);
+
+                holder.btnFollow.setOnClickListener(v -> {
+                    DatabaseReference followRef = FirebaseDatabase.getInstance().getReference("follow");
+
+                    if (isFollowing[0]) {
+                        // Unfollow
+                        if (followId[0] != null) {
+                            followRef.child(followId[0]).removeValue().addOnCompleteListener(task -> {
+                                if (task.isSuccessful()) {
+                                    isFollowing[0] = false;
+                                    updateFollowButton(holder.btnFollow, isFollowing[0]);
+                                }
+                            });
+                        }
+                    } else {
+                        // Follow
+                        if (followId[0] == null) {
+                            followId[0] = followRef.push().getKey();
+                        }
+                        String currentDate = getCurrentTimestamp();
+                        Follow newFollow = new Follow(followId[0], uid, followingId, true, currentDate);
+                        followRef.child(followId[0]).setValue(newFollow).addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                isFollowing[0] = true;
+                                updateFollowButton(holder.btnFollow, isFollowing[0]);
+                            }
+                        });
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("PostAdapter", "Lỗi khi tải trạng thái follow", error.toException());
+            }
+        });
+    }
+
     private String getCurrentTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
         return sdf.format(new Date());
@@ -203,11 +273,17 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     private void updateLikeButton(Button btnLike, boolean isLiked) {
         if (isLiked) {
-            btnLike.setText("Đã thích");
             btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_black, 0, 0, 0);
         } else {
-            btnLike.setText("Thích");
             btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_white, 0, 0, 0);
+        }
+    }
+
+    private void updateFollowButton(Button btnFollow, boolean isFollowing) {
+        if (isFollowing) {
+            btnFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_follow, 0, 0, 0);
+        } else {
+            btnFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wasfollow, 0, 0, 0);
         }
     }
 
@@ -248,6 +324,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         TextView dayPost;
         Button btnLike;
         Button btnComment;
+        Button btnFollow;
         ImageView menuOptions;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -260,6 +337,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             dayPost = itemView.findViewById(R.id.day_post);
             btnLike = itemView.findViewById(R.id.btnLike);
             btnComment = itemView.findViewById(R.id.btnComment);
+            btnFollow = itemView.findViewById(R.id.btnFollow);
             menuOptions = itemView.findViewById(R.id.menuOptions);
         }
     }
