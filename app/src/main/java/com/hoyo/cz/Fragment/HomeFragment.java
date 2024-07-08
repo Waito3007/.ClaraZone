@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -45,13 +44,10 @@ public class HomeFragment extends Fragment {
         recyclerView = view.findViewById(R.id.newfeed);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(getContext(), postList);
         recyclerView.setAdapter(postAdapter);
-
         loadPosts();
-
         addPostBtn.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), PostActivity.class);
             startActivity(intent);
