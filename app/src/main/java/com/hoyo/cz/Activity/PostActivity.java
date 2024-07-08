@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
@@ -21,11 +22,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.Model.Post;
 import com.hoyo.cz.R;
 
@@ -39,9 +44,11 @@ public class PostActivity extends AppCompatActivity {
     private VideoView videoPreview;
     private Button buttonChooseMedia;
     private Button buttonPost;
+    private TextView userName;
     private Button btnBack;
     private CheckBox checkboxPrivacy;
     private DatabaseReference databaseReference;
+    private DatabaseReference accountReference;
     private StorageReference storageReference;
     private Uri mediaUri;
     private FirebaseAuth firebaseAuth;
@@ -58,9 +65,12 @@ public class PostActivity extends AppCompatActivity {
         videoPreview = findViewById(R.id.video_preview);
         buttonChooseMedia = findViewById(R.id.choosemedia_btn);
         buttonPost = findViewById(R.id.post_btn);
+        userName = findViewById(R.id.user_name);
+
         checkboxPrivacy = findViewById(R.id.checkbox_privacy);
         btnBack = findViewById(R.id.btback);
 
+        accountReference = FirebaseDatabase.getInstance().getReference("account");
         databaseReference = FirebaseDatabase.getInstance().getReference("posts");
         storageReference = FirebaseStorage.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -97,7 +107,34 @@ public class PostActivity extends AppCompatActivity {
                 }
             }
         });
+
+        // Lấy tên người dùng hiện tại và hiển thị
+        FirebaseUser currentUser = firebaseAuth.getCurrentUser();
+        if (currentUser != null) {
+            loadUserName(currentUser.getUid());
+        }
     }
+
+    // Hàm lấy tên người dùng từ Firebase Database
+    private void loadUserName(String userId) {
+        accountReference.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    Account account = snapshot.getValue(Account.class);
+                    if (account != null) {
+                        userName.setText(account.getNameUser()); // Cập nhật TextView userName
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(PostActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 
     // Hàm tải media lên Firebase Storage và lưu thông tin bài viết vào Firebase Database
     private void uploadMediaToFirebase(String title, String timestamp, boolean status) {

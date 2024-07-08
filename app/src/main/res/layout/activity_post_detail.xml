@@ -88,6 +88,8 @@
             android:id="@+id/btnLike"
             android:layout_width="70dp"
             android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/ic_heart_white"
             android:textAllCaps="false" />
 
@@ -96,7 +98,8 @@
             android:layout_width="73dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20sp"
-            android:background="@null"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
             android:drawableRight="@drawable/ic_comment"
             android:textAllCaps="false" />
     </LinearLayout>
