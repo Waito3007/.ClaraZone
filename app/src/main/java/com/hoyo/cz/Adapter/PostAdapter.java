@@ -10,26 +10,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hoyo.cz.Fragment.OptionsFragment;
 import com.hoyo.cz.Model.Account;
-import com.hoyo.cz.Model.Like;
 import com.hoyo.cz.Model.Post;
 import com.hoyo.cz.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder> {
 
@@ -70,7 +67,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             holder.content.setVisibility(View.GONE);
         }
 
-        // tải thông tin của user
+        // Load user details
         accountsRef.child(post.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -84,6 +81,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             .placeholder(R.drawable.placeholder_image)
                             .error(R.drawable.error_image)
                             .into(holder.imageViewUserAvatar);
+
+                    // Hiển thị menuOptions cho người dùng đăng bài
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null &&
+                            FirebaseAuth.getInstance().getCurrentUser().getUid().equals(post.getUid())) {
+                        holder.menuOptions.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.menuOptions.setVisibility(View.GONE);
+                    }
                 }
             }
 
@@ -93,73 +98,20 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
 
-        // Handle like button status
-        handleLikeStatus(holder, post);
-    }
+        holder.btnLike.setOnClickListener(v -> {
+            // Xử lý sự kiện khi nhấn nút Thích
+        });
 
-    private void handleLikeStatus(PostViewHolder holder, Post post) {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser == null) {
-            return; // User is not authenticated
-        }
+        holder.btnComment.setOnClickListener(v -> {
+            // Xử lý sự kiện khi nhấn nút Bình luận
+        });
 
-        String postId = post.getPid();
-        String userId = currentUser.getUid();
-        DatabaseReference likesRef = FirebaseDatabase.getInstance().getReference("like").child(postId).child(userId);
-
-        likesRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                boolean userLiked = snapshot.exists() && snapshot.child("status").getValue(Boolean.class) == Boolean.TRUE;
-
-                // Update UI based on like status
-                updateLikeButton(holder.btnLike, userLiked);
-
-                // Set click listener for like button
-                holder.btnLike.setOnClickListener(v -> {
-                    toggleLikeStatus(likesRef, holder.btnLike, userLiked);
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                Log.e("PostAdapter", "Error loading like status", error.toException());
-            }
+        holder.menuOptions.setOnClickListener(v -> {
+            OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
+            optionsFragment.show(((FragmentActivity) context).getSupportFragmentManager(), "OptionsFragment");
         });
     }
 
-    private void updateLikeButton(Button btnLike, boolean userLiked) {
-        if (userLiked) {
-            btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_black, 0, 0, 0);
-            btnLike.setTextColor(context.getResources().getColor(R.color.black));
-        } else {
-            btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_white, 0, 0, 0);
-            btnLike.setTextColor(context.getResources().getColor(R.color.black));
-        }
-    }
-
-    private void toggleLikeStatus(DatabaseReference likesRef, Button btnLike, boolean userLiked) {
-        if (userLiked) {
-            // Unlike
-            likesRef.removeValue();
-            updateLikeButton(btnLike, false);
-        } else {
-            // Like
-            String likedAt = getCurrentTime();
-            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-            if (currentUser != null) {
-                String postId = likesRef.getParent().getKey();
-                Like like = new Like(postId, currentUser.getUid(), likedAt, true);
-                likesRef.setValue(like);
-                updateLikeButton(btnLike, true);
-            }
-        }
-    }
-
-    private String getCurrentTime() {
-        SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
-        return sdf.format(new Date());
-    }
 
     @Override
     public int getItemCount() {
@@ -169,7 +121,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewUserAvatar;
         TextView nameUser, dayPost, title;
-        ImageView content;
+        ImageView content,menuOptions;
         Button btnLike, btnComment;
 
         public PostViewHolder(@NonNull View itemView) {
@@ -181,6 +133,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             content = itemView.findViewById(R.id.content);
             btnLike = itemView.findViewById(R.id.btnLike);
             btnComment = itemView.findViewById(R.id.btnComment);
+            menuOptions = itemView.findViewById(R.id.menuOptions);
         }
     }
 }

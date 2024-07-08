@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hoyo.cz.Fragment.HomeFragment;
+import com.hoyo.cz.Fragment.NotificationFragment;
 import com.hoyo.cz.Fragment.ProfileFragment;
 import com.hoyo.cz.Fragment.SearchFragment;
 import com.hoyo.cz.Model.Account;
@@ -77,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 if (itemId == R.id.nav_home) {
                     selectedFragment = new HomeFragment();
                 } else if (itemId == R.id.nav_search) {
-                    selectedFragment = new SearchFragment();
+                    selectedFragment = new NotificationFragment();
                 } else if (itemId == R.id.nav_profile) {
                     selectedFragment = new ProfileFragment();
                 }
