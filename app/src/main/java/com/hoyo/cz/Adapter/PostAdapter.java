@@ -1,6 +1,7 @@
 package com.hoyo.cz.Adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hoyo.cz.Activity.PostDetailActivity;
 import com.hoyo.cz.Fragment.OptionsFragment;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.Model.Post;
@@ -108,10 +110,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
         holder.menuOptions.setOnClickListener(v -> {
             OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
-            optionsFragment.show(((FragmentActivity) context).getSupportFragmentManager(), "OptionsFragment");
+            optionsFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "OptionsFragment");
+        });
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, PostDetailActivity.class);
+            intent.putExtra("postId", post.getPid());
+            context.startActivity(intent);
         });
     }
-
 
     @Override
     public int getItemCount() {
@@ -120,17 +127,22 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
         ImageView imageViewUserAvatar;
-        TextView nameUser, dayPost, title;
-        ImageView content,menuOptions;
-        Button btnLike, btnComment;
+        TextView nameUser;
+        ImageView content;
+        TextView title;
+        TextView dayPost;
+        Button btnLike;
+        Button btnComment;
+        ImageView menuOptions;
 
         public PostViewHolder(@NonNull View itemView) {
             super(itemView);
+
             imageViewUserAvatar = itemView.findViewById(R.id.imageViewUserAvatar);
             nameUser = itemView.findViewById(R.id.name_user);
-            dayPost = itemView.findViewById(R.id.day_post);
-            title = itemView.findViewById(R.id.title);
             content = itemView.findViewById(R.id.content);
+            title = itemView.findViewById(R.id.title);
+            dayPost = itemView.findViewById(R.id.day_post);
             btnLike = itemView.findViewById(R.id.btnLike);
             btnComment = itemView.findViewById(R.id.btnComment);
             menuOptions = itemView.findViewById(R.id.menuOptions);

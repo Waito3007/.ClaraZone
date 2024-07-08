@@ -1,0 +1,252 @@
+package com.hoyo.cz.Activity;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.hoyo.cz.Adapter.CommentAdapter;
+import com.hoyo.cz.Adapter.PostAdapter;
+import com.hoyo.cz.Model.Account;
+import com.hoyo.cz.Model.Comment;
+import com.hoyo.cz.Model.Post;
+import com.hoyo.cz.R;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+
+public class PostDetailActivity extends AppCompatActivity {
+
+    private static final int PICK_IMAGE_REQUEST = 1;
+    private Uri imageUri;
+
+    private ImageView imageViewUserAvatar;
+    private TextView nameUser, dayPost, title;
+    private ImageView content, menuOptions, addImageComment, sendComment;
+    private Button btnLike, btnComment;
+    private EditText editTextComment;
+    private RecyclerView recyclerViewComments;
+    private CommentAdapter commentAdapter;
+    private RecyclerView recyclerViewPost;
+    private PostAdapter postAdapter;
+    private List<Comment> commentList;
+    private String postId;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_post_detail);
+
+        imageViewUserAvatar = findViewById(R.id.imageViewUserAvatar);
+        nameUser = findViewById(R.id.name_user);
+        dayPost = findViewById(R.id.day_post);
+        title = findViewById(R.id.title);
+        content = findViewById(R.id.content);
+        menuOptions = findViewById(R.id.menuOptions);
+        btnLike = findViewById(R.id.btnLike);
+        btnComment = findViewById(R.id.btnComment);
+        addImageComment = findViewById(R.id.addImageComment);
+        sendComment = findViewById(R.id.sendComment);
+        editTextComment = findViewById(R.id.editTextComment);
+        recyclerViewComments = findViewById(R.id.recyclerViewComments);
+
+        postId = getIntent().getStringExtra("postId");
+
+        loadPostDetails();
+        setupComments();
+
+        addImageComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                openFileChooser();
+            }
+        });
+
+        sendComment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                postComment();
+            }
+        });
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+        }
+    }
+
+    private void loadPostDetails() {
+        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("posts").child(postId);
+        postRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Post post = snapshot.getValue(Post.class);
+                if (post != null) {
+                    dayPost.setText(post.getDayupP());
+                    title.setText(post.getTitleP());
+
+                    // Load post content (image)
+                    String mediaUrl = post.getContentP();
+                    if (mediaUrl != null && !mediaUrl.isEmpty()) {
+                        content.setVisibility(View.VISIBLE);
+                        Glide.with(PostDetailActivity.this)
+                                .load(mediaUrl)
+                                .apply(new RequestOptions().placeholder(R.drawable.placeholder_image).error(R.drawable.error_image))
+                                .into(content);
+                    } else {
+                        content.setVisibility(View.GONE);
+                    }
+
+                    loadUserDetails(post.getUid());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý lỗi nếu cần
+            }
+        });
+    }
+
+    private void loadUserDetails(String uid) {
+        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("account").child(uid);
+        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Account account = snapshot.getValue(Account.class);
+                if (account != null) {
+                    nameUser.setText(account.getNameUser());
+
+                    Glide.with(PostDetailActivity.this)
+                            .load(account.getAvatarUser() != null ? account.getAvatarUser() : R.drawable.avatar_macdinh)
+                            .circleCrop()
+                            .placeholder(R.drawable.placeholder_image)
+                            .error(R.drawable.error_image)
+                            .into(imageViewUserAvatar);
+                    // Hiển thị menuOptions cho người dùng đăng bài
+                    if (FirebaseAuth.getInstance().getCurrentUser() != null &&
+                            FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uid)) {
+                        menuOptions.setVisibility(View.VISIBLE);
+                    } else {
+                        menuOptions.setVisibility(View.GONE);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý lỗi nếu cần
+            }
+        });
+    }
+
+    private void setupComments() {
+        commentList = new ArrayList<>();
+        commentAdapter = new CommentAdapter(this, commentList);
+        recyclerViewComments.setLayoutManager(new LinearLayoutManager(this));
+        recyclerViewComments.setAdapter(commentAdapter);
+
+        DatabaseReference commentsRef = FirebaseDatabase.getInstance().getReference("comments");
+        Query query = commentsRef.orderByChild("pid").equalTo(postId);
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                commentList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Comment comment = dataSnapshot.getValue(Comment.class);
+                    commentList.add(comment);
+                }
+                commentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Xử lý lỗi nếu cần
+            }
+        });
+    }
+
+    private void postComment() {
+        String commentText = editTextComment.getText().toString().trim();
+        if (TextUtils.isEmpty(commentText) && imageUri == null) {
+            Toast.makeText(this, "Please enter a comment or select an image", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        String commentId = FirebaseDatabase.getInstance().getReference().push().getKey();
+        String currentDate = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault()).format(new Date());
+
+        if (imageUri != null) {
+            uploadImage(commentId, userId, commentText, currentDate);
+        } else {
+            saveComment(commentId, userId, commentText, currentDate, null);
+        }
+    }
+
+    private void uploadImage(String commentId, String userId, String commentText, String currentDate) {
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference("comment_images").child(commentId + ".jpg");
+        storageReference.putFile(imageUri).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                storageReference.getDownloadUrl().addOnSuccessListener(uri -> {
+                    List<String> imageUrls = new ArrayList<>();
+                    imageUrls.add(uri.toString());
+                    saveComment(commentId, userId, commentText, currentDate, imageUrls);
+                });
+            } else {
+                Toast.makeText(this, "Failed to upload image", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void saveComment(String commentId, String userId, String commentText, String currentDate, List<String> imageUrls) {
+        Comment comment = new Comment(commentId, userId, postId, currentDate, commentText, imageUrls);
+        DatabaseReference commentRef = FirebaseDatabase.getInstance().getReference("comments").child(commentId);
+        commentRef.setValue(comment).addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Toast.makeText(this, "Comment posted", Toast.LENGTH_SHORT).show();
+                editTextComment.setText("");
+                imageUri = null;
+            } else {
+                Toast.makeText(this, "Failed to post comment", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+}

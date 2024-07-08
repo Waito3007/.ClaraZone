@@ -1,6 +1,8 @@
 package com.hoyo.cz.Model;
 
-public class Post {
+import java.io.Serializable;
+
+public class Post implements Serializable {
     private String pid;
     private String uid;
     private String titleP;
