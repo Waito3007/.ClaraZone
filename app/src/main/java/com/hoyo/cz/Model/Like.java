@@ -1,45 +1,55 @@
 package com.hoyo.cz.Model;
 
 public class Like {
-    private String postId;
-    private String userId;
-    private String likedAt;
-    private boolean status; // Thêm thuộc tính để xác định trạng thái like
+    private String likeId;
+    private String pid;
+    private String uid;
+    private String timestamp;
+    private boolean status;
 
-    // Constructor mặc định (cần thiết cho Firebase)
-    public Like() {}
+    public Like() {
+        // Firebase cần constructor mặc định
+    }
 
-    // Constructor với các tham số
-    public Like(String postId, String userId, String likedAt, boolean status) {
-        this.postId = postId;
-        this.userId = userId;
-        this.likedAt = likedAt;
+    public Like(String likeId, String pid, String uid, String timestamp, boolean status) {
+        this.likeId = likeId;
+        this.pid = pid;
+        this.uid = uid;
+        this.timestamp = timestamp;
         this.status = status;
     }
 
     // Getters và Setters
-    public String getPostId() {
-        return postId;
+    public String getLikeId() {
+        return likeId;
     }
 
-    public void setPostId(String postId) {
-        this.postId = postId;
+    public void setLikeId(String likeId) {
+        this.likeId = likeId;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getPid() {
+        return pid;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setPid(String pid) {
+        this.pid = pid;
     }
 
-    public String getLikedAt() {
-        return likedAt;
+    public String getUid() {
+        return uid;
     }
 
-    public void setLikedAt(String likedAt) {
-        this.likedAt = likedAt;
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
     }
 
     public boolean isStatus() {
