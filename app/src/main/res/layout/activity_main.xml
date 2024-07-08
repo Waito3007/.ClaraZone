@@ -21,6 +21,7 @@
         android:background="#FFFFFF"
         app:itemIconTint="@color/black"
         app:itemTextColor="@color/black"
+        app:labelVisibilityMode="unlabeled"
         app:menu="@menu/menu_main" />
 
 
