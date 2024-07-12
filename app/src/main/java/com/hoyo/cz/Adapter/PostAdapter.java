@@ -134,7 +134,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
-    private void handleLikeStatus(PostViewHolder holder, Post post) {
+    public void handleLikeStatus(PostViewHolder holder, Post post) {
         if (currentUser == null) {
             return; // Người dùng chưa đăng nhập
         }
@@ -196,12 +196,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
-    private String getCurrentTimestamp() {
+    public String getCurrentTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
         return sdf.format(new Date());
     }
 
-    private void updateLikeButton(Button btnLike, boolean isLiked) {
+    public void updateLikeButton(Button btnLike, boolean isLiked) {
         if (isLiked) {
             btnLike.setText("Đã thích");
             btnLike.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_heart_black, 0, 0, 0);
@@ -211,7 +211,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         }
     }
 
-    private void updateLikeCount(String pid, int countChange) {
+    public void updateLikeCount(String pid, int countChange) {
         DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference("posts").child(pid);
         postsRef.runTransaction(new Transaction.Handler() {
             @Override
