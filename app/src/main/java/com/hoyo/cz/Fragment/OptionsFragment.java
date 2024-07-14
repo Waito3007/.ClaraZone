@@ -31,18 +31,20 @@ public class OptionsFragment extends DialogFragment {
         TextView tvEdit = view.findViewById(R.id.tvEdit);
         TextView tvDelete = view.findViewById(R.id.tvDelete);
 
+        // Xử lý khi nhấn vào nút Chỉnh sửa
         tvEdit.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), EditPostActivity.class);
             intent.putExtra("pid", pid);
             startActivity(intent);
-            dismiss();
+            dismiss(); // Đóng fragment sau khi chuyển sang EditPostActivity
         });
 
+        // Xử lý khi nhấn vào nút Xóa
         tvDelete.setOnClickListener(v -> {
             Intent intent = new Intent(getActivity(), DeletePostActivity.class);
             intent.putExtra("pid", pid);
             startActivity(intent);
-            dismiss();
+            dismiss(); // Đóng fragment sau khi chuyển sang DeletePostActivity
         });
 
         return view;
@@ -53,8 +55,8 @@ public class OptionsFragment extends DialogFragment {
         super.onStart();
         if (getDialog() != null) {
             getDialog().getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-            getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation);
-            getDialog().getWindow().setDimAmount(0.5f);
+            getDialog().getWindow().setWindowAnimations(R.style.DialogAnimation); // Thiết lập animation cho fragment
+            getDialog().getWindow().setDimAmount(0.5f); // Thiết lập độ mờ của nền
         }
     }
 }

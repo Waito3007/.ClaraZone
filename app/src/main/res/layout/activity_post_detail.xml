@@ -4,149 +4,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewPosts"
+        android:layout_width="370dp"
+        android:layout_height="306dp"
+        android:clipToPadding="false"
+        android:scrollbars="vertical"
+        android:visibility="visible" />
 
-    <!-- Header Layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_vertical"
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imageViewUserAvatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:background="@drawable/rounded_corner_vector"
-            android:scaleType="centerCrop"
-            android:src="@drawable/avatar_macdinh" />
+            android:id="@+id/addImageComment"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/add" />
 
-        <LinearLayout
+        <EditText
+            android:id="@+id/editTextComment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/name_user"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="User Name"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/day_post"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:text="dd/mm/yy" />
-
-        </LinearLayout>
+            android:hint="Bạn đang nghĩ gì" />
 
         <ImageView
-            android:id="@+id/menuOptions"
-            android:layout_width="35dp"
-            android:layout_height="match_parent"
-            android:layout_gravity="right"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
-            android:contentDescription="Menu Options"
-            android:src="@drawable/menu_option" />
+            android:id="@+id/sendComment"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_margin="5dp"
+            android:src="@drawable/send_ic" />
     </LinearLayout>
 
-    <!-- Post Title -->
-    <TextView
-        android:id="@+id/title"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewComments"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:text="Status Title"
-        android:textColor="@android:color/black"
-        android:textSize="16sp" />
-
-    <!-- Post Content Image -->
-    <ImageView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="240dp"
-        android:layout_marginTop="8dp"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/avatar_macdinh" />
-
-    <!-- Like and Comment Buttons -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btnLike"
-            android:layout_width="70dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_heart_white"
-            android:textAllCaps="false" />
-
-        <Button
-            android:id="@+id/btnComment"
-            android:layout_width="73dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20sp"
-            android:background="@android:color/transparent"
-            android:backgroundTint="@android:color/transparent"
-            android:drawableRight="@drawable/ic_comment"
-            android:textAllCaps="false" />
-    </LinearLayout>
-
-    <!-- Comment Section -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="vertical">
-
-        <!-- Comments List -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/addImageComment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/add" />
-
-            <EditText
-                android:id="@+id/editTextComment"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:hint="Bạn đang nghĩ gì" />
-
-            <ImageView
-                android:id="@+id/sendComment"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_margin="5dp"
-                android:src="@drawable/send_ic" />
-        </LinearLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerViewComments"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical" />
-
-        <!-- Add Comment Section -->
-    </LinearLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" />
 
 </LinearLayout>
