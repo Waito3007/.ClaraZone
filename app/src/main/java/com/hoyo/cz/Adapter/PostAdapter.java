@@ -34,6 +34,7 @@ import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.Model.Follow;
 import com.hoyo.cz.Model.Like;
 import com.hoyo.cz.Model.Post;
+import com.hoyo.cz.Model.Share;
 import com.hoyo.cz.R;
 
 import java.text.SimpleDateFormat;
@@ -99,6 +100,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             // Xử lý sự kiện khi nhấn nút Bình luận
         });
 
+        holder.btnShare.setOnClickListener(v -> handleSharePost(post));
+
+        // Xử lý sự kiện khi nhấn nút Menu Options
         holder.menuOptions.setOnClickListener(v -> {
             OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
             optionsFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "OptionsFragment");
@@ -266,6 +270,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
+    private void handleSharePost(Post post) {
+        if (currentUser == null) {
+            return; // Người dùng chưa đăng nhập
+        }
+
+        String sid = FirebaseDatabase.getInstance().getReference("share").push().getKey();
+        String pid = post.getPid();
+        String timestamp = getCurrentTimestamp();
+
+        String uid = currentUser.getUid();
+        boolean statusShare = true; // Hoặc gán giá trị theo yêu cầu của bạn
+
+        Share newShare = new Share(sid, timestamp, uid, pid);
+
+        FirebaseDatabase.getInstance().getReference("share")
+                .child(sid)
+                .setValue(newShare)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Bài viết đã được chia sẻ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Lỗi khi chia sẻ bài viết", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private String getCurrentTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
         return sdf.format(new Date());
@@ -317,6 +347,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
+         Button btnShare;
         ImageView imageViewUserAvatar;
         TextView nameUser;
         ImageView content;
@@ -331,6 +362,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             super(itemView);
 
             imageViewUserAvatar = itemView.findViewById(R.id.imageViewUserAvatar);
+            btnShare = itemView.findViewById(R.id.btnShare);
             nameUser = itemView.findViewById(R.id.name_user);
             content = itemView.findViewById(R.id.content);
             title = itemView.findViewById(R.id.title);

@@ -92,7 +92,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-
             android:adjustViewBounds="true"
             android:scaleType="fitCenter"
             android:src="@drawable/avatar_macdinh" />
@@ -102,18 +101,20 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="493dp">
 
         <Button
             android:id="@+id/btnLike"
-            android:layout_width="85dp"
-            android:layout_height="51dp"
+            android:layout_width="65dp"
+            android:layout_height="41dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/ic_heart_white"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btnComment"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -121,15 +122,29 @@
             android:id="@+id/btnComment"
             android:layout_width="65dp"
             android:layout_height="41dp"
-            android:layout_marginEnd="170dp"
+            android:layout_marginEnd="60dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/ic_comment"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/btnShare"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
+        <Button
+            android:id="@+id/btnShare"
+            android:layout_width="65dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="36dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableLeft="@drawable/share_ic"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
