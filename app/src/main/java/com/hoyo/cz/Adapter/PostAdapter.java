@@ -29,6 +29,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.hoyo.cz.Activity.PostDetailActivity;
+import com.hoyo.cz.Activity.UDPageActivity;
 import com.hoyo.cz.Fragment.OptionsFragment;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.Model.Follow;
@@ -69,6 +70,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+
+
         Post post = postList.get(position);
 
         // Load post details
@@ -103,6 +106,12 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.btnShare.setOnClickListener(v -> handleSharePost(post));
 
         // Xử lý sự kiện khi nhấn nút Menu Options
+        // Kiểm tra nếu người dùng là chủ bài viết
+        if (currentUser != null && (post.getUid().equals(currentUser.getUid()))) {
+            holder.menuOptions.setVisibility(View.VISIBLE);
+        } else {
+            holder.menuOptions.setVisibility(View.GONE);
+        }
         holder.menuOptions.setOnClickListener(v -> {
             OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
             optionsFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "OptionsFragment");
@@ -113,9 +122,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             intent.putExtra("postId", post.getPid());
             context.startActivity(intent);
         });
-    }
 
-    private void loadUserDetails(PostViewHolder holder, Post post) {
+        //Xem trang cá nhân người dùng vừa ấn.
+        holder.imageViewUserAvatar.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UDPageActivity.class);
+            intent.putExtra("userId", post.getUid());
+            context.startActivity(intent);
+        });
+
+        holder.nameUser.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UDPageActivity.class);
+            intent.putExtra("userId", post.getUid());
+            context.startActivity(intent);
+        });
+    }
+    public void loadUserDetails(PostViewHolder holder, Post post) {
         accountsRef.child(post.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -130,7 +151,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             .error(R.drawable.error_image)
                             .into(holder.imageViewUserAvatar);
 
-                    if (currentUser != null && currentUser.getUid().equals(post.getUid())) {
+                    // Kiểm tra xem người dùng có phải là admin không
+                    if (currentUser != null && (currentUser.getUid().equals(post.getUid()) || account.isAdmin())) {
                         holder.menuOptions.setVisibility(View.VISIBLE);
                     } else {
                         holder.menuOptions.setVisibility(View.GONE);
@@ -144,6 +166,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
     }
+
 
     private void handleLikeStatus(PostViewHolder holder, Post post) {
         if (currentUser == null) {

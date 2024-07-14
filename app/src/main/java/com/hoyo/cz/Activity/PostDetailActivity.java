@@ -46,15 +46,10 @@ public class PostDetailActivity extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
 
-    private ImageView imageViewUserAvatar;
-    private TextView nameUser, dayPost, title;
-    private ImageView content, menuOptions, addImageComment, sendComment;
-    private Button btnLike, btnComment;
+    private ImageView addImageComment, sendComment;
     private EditText editTextComment;
     private RecyclerView recyclerViewComments;
     private CommentAdapter commentAdapter;
-    private RecyclerView recyclerViewPost;
-    private PostAdapter postAdapter;
     private List<Comment> commentList;
     private String postId;
 
@@ -63,14 +58,6 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
 
-        imageViewUserAvatar = findViewById(R.id.imageViewUserAvatar);
-        nameUser = findViewById(R.id.name_user);
-        dayPost = findViewById(R.id.day_post);
-        title = findViewById(R.id.title);
-        content = findViewById(R.id.content);
-        menuOptions = findViewById(R.id.menuOptions);
-        btnLike = findViewById(R.id.btnLike);
-        btnComment = findViewById(R.id.btnComment);
         addImageComment = findViewById(R.id.addImageComment);
         sendComment = findViewById(R.id.sendComment);
         editTextComment = findViewById(R.id.editTextComment);
@@ -78,7 +65,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
         postId = getIntent().getStringExtra("postId");
 
-        loadPostDetails();
+        setupPostAdapter();
         setupComments();
 
         addImageComment.setOnClickListener(new View.OnClickListener() {
@@ -96,82 +83,28 @@ public class PostDetailActivity extends AppCompatActivity {
         });
     }
 
-    private void openFileChooser() {
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
-            imageUri = data.getData();
-        }
-    }
-
-    private void loadPostDetails() {
-        DatabaseReference postRef = FirebaseDatabase.getInstance().getReference("posts").child(postId);
-        postRef.addListenerForSingleValueEvent(new ValueEventListener() {
+    private void setupPostAdapter() {
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewPosts);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        DatabaseReference postsRef = FirebaseDatabase.getInstance().getReference("posts");
+        Query query = postsRef.orderByChild("pid").equalTo(postId);
+        query.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Post post = snapshot.getValue(Post.class);
-                if (post != null) {
-                    dayPost.setText(post.getDayupP());
-                    title.setText(post.getTitleP());
-
-                    // Load post content (image)
-                    String mediaUrl = post.getContentP();
-                    if (mediaUrl != null && !mediaUrl.isEmpty()) {
-                        content.setVisibility(View.VISIBLE);
-                        Glide.with(PostDetailActivity.this)
-                                .load(mediaUrl)
-                                .apply(new RequestOptions().placeholder(R.drawable.placeholder_image).error(R.drawable.error_image))
-                                .into(content);
-                    } else {
-                        content.setVisibility(View.GONE);
+                List<Post> postList = new ArrayList<>();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Post post = dataSnapshot.getValue(Post.class);
+                    if (post != null) {
+                        postList.add(post);
                     }
-
-                    loadUserDetails(post.getUid());
                 }
+                PostAdapter postAdapter = new PostAdapter(PostDetailActivity.this, postList);
+                recyclerView.setAdapter(postAdapter);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
-            }
-        });
-    }
-
-    private void loadUserDetails(String uid) {
-        DatabaseReference userRef = FirebaseDatabase.getInstance().getReference("account").child(uid);
-        userRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Account account = snapshot.getValue(Account.class);
-                if (account != null) {
-                    nameUser.setText(account.getNameUser());
-
-                    Glide.with(PostDetailActivity.this)
-                            .load(account.getAvatarUser() != null ? account.getAvatarUser() : R.drawable.avatar_macdinh)
-                            .circleCrop()
-                            .placeholder(R.drawable.placeholder_image)
-                            .error(R.drawable.error_image)
-                            .into(imageViewUserAvatar);
-                    // Hiển thị menuOptions cho người dùng đăng bài
-                    if (FirebaseAuth.getInstance().getCurrentUser() != null &&
-                            FirebaseAuth.getInstance().getCurrentUser().getUid().equals(uid)) {
-                        menuOptions.setVisibility(View.VISIBLE);
-                    } else {
-                        menuOptions.setVisibility(View.GONE);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
+                Toast.makeText(PostDetailActivity.this, "Failed to load post details.", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -198,9 +131,24 @@ public class PostDetailActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                // Xử lý lỗi nếu cần
+                Toast.makeText(PostDetailActivity.this, "Failed to load comments.", Toast.LENGTH_SHORT).show();
             }
         });
+    }
+
+    private void openFileChooser() {
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+            imageUri = data.getData();
+        }
     }
 
     private void postComment() {

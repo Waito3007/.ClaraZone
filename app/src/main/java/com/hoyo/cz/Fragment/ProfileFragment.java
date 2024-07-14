@@ -23,13 +23,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.hoyo.cz.Activity.AdminPageActivity;
 import com.hoyo.cz.Activity.SignInActivity;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.R;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView tvUsername,tvChange;
+    private TextView tvUsername, tvChange, tvAdmin;
     private ImageView ivAvatar;
     private Button btLogout;
     private FirebaseAuth mAuth;
@@ -43,6 +44,8 @@ public class ProfileFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         ivAvatar = view.findViewById(R.id.ivAvatar);
         btLogout = view.findViewById(R.id.btlogout);
+        tvAdmin = view.findViewById(R.id.tvAdmin); // TextView for Admin info
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -62,6 +65,20 @@ public class ProfileFragment extends Fragment {
                                 .placeholder(R.drawable.avatar_macdinh)
                                 .error(R.drawable.avatar_macdinh)
                                 .into(ivAvatar);
+                        // Check if user is admin and show tvAdmin
+                        if (account.isAdmin()) {
+                            tvAdmin.setVisibility(View.VISIBLE);
+                            // Set click listener to tvAdmin to open AdminPageActivity
+                            tvAdmin.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    // Navigate to AdminPageActivity
+                                    startActivity(new Intent(requireContext(), AdminPageActivity.class));
+                                }
+                            });
+                        } else {
+                            tvAdmin.setVisibility(View.GONE);
+                        }
                     }
                 }
 
@@ -93,6 +110,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
         tvChange.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,6 +121,7 @@ public class ProfileFragment extends Fragment {
                 transaction.commit();
             }
         });
+
         return view;
     }
 }
