@@ -29,7 +29,7 @@ import com.hoyo.cz.R;
 
 public class ProfileFragment extends Fragment {
 
-    private TextView tvUsername;
+    private TextView tvUsername,tvChange;
     private ImageView ivAvatar;
     private Button btLogout;
     private FirebaseAuth mAuth;
@@ -39,7 +39,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_profile, container, false);
-
+        tvChange = view.findViewById(R.id.tvChange);
         tvUsername = view.findViewById(R.id.tvUsername);
         ivAvatar = view.findViewById(R.id.ivAvatar);
         btLogout = view.findViewById(R.id.btlogout);
@@ -57,7 +57,8 @@ public class ProfileFragment extends Fragment {
                     if (account != null) {
                         tvUsername.setText(account.getNameUser());
                         Glide.with(requireContext())
-                                .load(account.getAvatarUser())
+                                .load(account.getAvatarUser() != null ? account.getAvatarUser() : R.drawable.avatar_macdinh)
+                                .circleCrop()
                                 .placeholder(R.drawable.avatar_macdinh)
                                 .error(R.drawable.avatar_macdinh)
                                 .into(ivAvatar);
@@ -92,7 +93,16 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
-
+        tvChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to EditProfileFragment
+                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+                transaction.replace(R.id.container, new EditProfileFragment());
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         return view;
     }
 }

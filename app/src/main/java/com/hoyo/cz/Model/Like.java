@@ -18,7 +18,6 @@ public class Like {
         this.timestamp = timestamp;
         this.status = status;
     }
-
     // Getters và Setters
     public String getLikeId() {
         return likeId;

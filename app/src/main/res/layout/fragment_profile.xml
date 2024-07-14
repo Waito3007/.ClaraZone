@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -7,30 +9,93 @@
 
     <ImageView
         android:id="@+id/ivAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginBottom="16dp"
-        android:background="@color/white"
+        android:layout_width="108dp"
+        android:layout_height="106dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/avatar_border"
         android:scaleType="centerCrop"
         android:src="@drawable/avatar_macdinh"
-        android:layout_gravity="center_horizontal"
-    />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.039"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_width="139dp"
+        android:layout_height="46dp"
+        android:layout_marginTop="52dp"
         android:text="Username"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:layout_gravity="center_horizontal"
-    />
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.639"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvChange"
+        android:layout_width="371dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="224dp"
+        android:background="@drawable/rounded_button"
+        android:text="Tùy chỉnh thông tin hồ sơ"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.045"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvsaved"
+        android:layout_width="371dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="276dp"
+        android:text="Xem bài viết đã lưu"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tvreport"
+        android:layout_width="371dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="324dp"
+        android:text="Báo cáo"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txrule"
+        android:layout_width="371dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="376dp"
+        android:text="Xem điều khoản sử dụng"
+        android:textColor="@android:color/black"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btlogout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Đăng xuất" />
+        android:layout_width="45dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="664dp"
+        android:background="@drawable/ic_logout"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,8 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#000000"
+    android:background="@drawable/bacground_ls"
     android:orientation="vertical"
+    android:fontFamily="@font/raleway_bold"
     app:layout_anchorGravity="center"
     tools:context=".Activity.SignUpActivity">
 
@@ -21,72 +22,58 @@
 
     <TextView
         android:id="@+id/tvCz"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:gravity="center"
-        android:text="ClaraZone"
-        android:textColor="#F1EEEE"
-        android:textSize="30sp"
+        android:layout_width="193dp"
+        android:layout_height="89dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="36dp"
+        android:background="@drawable/cz"
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/edFullName"
-        android:layout_width="341dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="46dp"
-        android:background="@drawable/borderinput"
-        android:hint="Nhập Họ Tên Của Bạn"
-        android:padding="12dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#858080"
-        android:textSize="20sp"
-        android:imeOptions="actionNext"/>
-
-    <EditText
         android:id="@+id/edEmail"
-        android:layout_width="341dp"
+        android:layout_width="316dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="106dp"
         android:background="@drawable/borderinput"
         android:hint="Nhập Email Của Bạn"
+        android:imeOptions="actionNext"
         android:padding="12dp"
         android:textColor="#FFFFFF"
-        android:textColorHint="#858080"
-        android:textSize="20sp"
-        android:imeOptions="actionNext"/>
+        android:textColorHint="@color/input"
+        android:textSize="17sp" />
 
     <EditText
         android:id="@+id/edPassword"
-        android:layout_width="346dp"
+        android:layout_width="317dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:background="@drawable/borderinput"
+        android:fontFamily="@font/raleway_bold"
         android:hint="Nhập Mật Khẩu"
+        android:imeOptions="actionNext"
         android:inputType="textPassword"
         android:padding="12dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/input"
         android:textColorHint="#858080"
-        android:textSize="20sp"
-        android:imeOptions="actionNext"/>
+        android:textSize="17sp" />
 
     <EditText
         android:id="@+id/edConfirmPassword"
-        android:layout_width="346dp"
+        android:layout_width="317dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
         android:background="@drawable/borderinput"
+        android:fontFamily="@font/raleway_bold"
         android:hint="Nhập Lại Mật Khẩu"
+        android:imeOptions="actionDone"
         android:inputType="textPassword"
         android:padding="12dp"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/input"
         android:textColorHint="#858080"
-        android:textSize="20sp"
-        android:imeOptions="actionDone"/>
+        android:textSize="17sp" />
 
     <CheckBox
         android:id="@+id/cbProtocol"
@@ -103,13 +90,17 @@
 
     <Button
         android:id="@+id/btSignup"
-        android:layout_width="354dp"
-        android:layout_height="60dp"
+        android:layout_width="244dp"
+        android:layout_height="54dp"
         android:layout_gravity="center"
-        android:layout_marginTop="40dp"
-        android:backgroundTint="#1ed760"
+        android:layout_marginTop="46dp"
+        android:background="@drawable/rounded_button"
+        android:backgroundTint="@null"
+        android:fontFamily="@font/raleway_bold"
         android:text="Đăng Kí"
-        android:textSize="20sp"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
 </LinearLayout>
