@@ -101,14 +101,12 @@ public class PostDetailActivity extends AppCompatActivity {
                 PostAdapter postAdapter = new PostAdapter(PostDetailActivity.this, postList);
                 recyclerView.setAdapter(postAdapter);
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Toast.makeText(PostDetailActivity.this, "Failed to load post details.", Toast.LENGTH_SHORT).show();
             }
         });
     }
-
     private void setupComments() {
         commentList = new ArrayList<>();
         commentAdapter = new CommentAdapter(this, commentList);

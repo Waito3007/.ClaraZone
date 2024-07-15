@@ -52,7 +52,6 @@ public class AdminPageActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 loadAccounts(newText);

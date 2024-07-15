@@ -75,7 +75,10 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_search) {
-                selectedFragment = new SearchFragment();
+                // Chuyển tới AdminPageActivity thay vì SearchFragment
+                Intent intent = new Intent(MainActivity.this, AdminPageActivity.class);
+                startActivity(intent);
+                return true;
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }
