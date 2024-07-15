@@ -1,66 +1,114 @@
 package com.hoyo.cz.Fragment;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.hoyo.cz.Adapter.AccountAdapter;
+import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.R;
 
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link SearchFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class SearchFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private RecyclerView rvSearchResults;
+    private EditText edSearch;
+    private AccountAdapter accountAdapter;
+    private List<Account> accountList;
+    private List<Account> filteredAccountList;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public SearchFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SearchFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static SearchFragment newInstance(String param1, String param2) {
-        SearchFragment fragment = new SearchFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_search, container, false);
+
+        edSearch = view.findViewById(R.id.edSearch);
+        rvSearchResults = view.findViewById(R.id.rvSearchResults);
+
+        rvSearchResults.setLayoutManager(new LinearLayoutManager(getContext()));
+        accountList = new ArrayList<>();
+        filteredAccountList = new ArrayList<>();
+
+        // Sử dụng context của Fragment khi tạo adapter
+        accountAdapter = new AccountAdapter(getContext(), filteredAccountList);
+        rvSearchResults.setAdapter(accountAdapter);
+
+        loadAccount();
+
+        edSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                filter(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+        return view;
+    }
+
+    private void loadAccount() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference("account");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                accountList.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    Account account = dataSnapshot.getValue(Account.class);
+                    if (account != null) {
+                        accountList.add(account);
+                        Log.d("FirebaseData", "Account loaded: " + account.getNameUser());
+                    } else {
+                        Log.d("FirebaseData", "Null account object found.");
+                    }
+                }
+                filteredAccountList.clear();
+                filteredAccountList.addAll(accountList);
+                accountAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.e("FirebaseError", "Error loading data from Firebase: " + error.getMessage());
+            }
+        });
+    }
+
+    public void filter(String text) {
+        filteredAccountList.clear();
+        Log.d("SearchFilter", "Filtering with text: " + text);
+        for (Account account : accountList) {
+            if (account.getNameUser().toLowerCase().contains(text.toLowerCase())) {
+                filteredAccountList.add(account);
+            }
         }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_search, container, false);
+        accountAdapter.notifyDataSetChanged();
+        Log.d("SearchFilter", "Filtered results: " + filteredAccountList.size());
+        for (Account account : filteredAccountList) {
+            Log.d("SearchFilter", "Found account: " + account.getNameUser());
+        }
     }
 }
