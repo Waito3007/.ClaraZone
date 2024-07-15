@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class EditProfileFragment extends Fragment {
     private static final int PICK_IMAGE_REQUEST = 1;
     private Uri imageUri;
 
+    private LinearLayout changeAvatarBtn;
     private ImageView ivAvatar;
     private EditText etName;
     private Button btSave;
@@ -57,6 +59,7 @@ public class EditProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_edit_profile, container, false);
 
+        changeAvatarBtn = view.findViewById(R.id.changeAvatar);
         ivAvatar = view.findViewById(R.id.ivEditAvatar);
         etName = view.findViewById(R.id.etName);
         btSave = view.findViewById(R.id.btnSave);
@@ -91,7 +94,7 @@ public class EditProfileFragment extends Fragment {
             });
         }
 
-        ivAvatar.setOnClickListener(new View.OnClickListener() {
+        changeAvatarBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 openFileChooser();

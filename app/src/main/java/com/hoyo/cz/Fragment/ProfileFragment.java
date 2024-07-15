@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ public class ProfileFragment extends Fragment {
 
     private TextView tvUsername, tvChange, tvAdmin;
     private ImageView ivAvatar;
+    private LinearLayout userPageLayout;
     private Button btLogout;
     private FirebaseAuth mAuth;
     private DatabaseReference databaseReference;
@@ -44,6 +46,7 @@ public class ProfileFragment extends Fragment {
         tvUsername = view.findViewById(R.id.tvUsername);
         ivAvatar = view.findViewById(R.id.ivAvatar);
         btLogout = view.findViewById(R.id.btlogout);
+        userPageLayout = view.findViewById(R.id.user_page);
         tvAdmin = view.findViewById(R.id.tvAdmin); // TextView for Admin info
 
         mAuth = FirebaseAuth.getInstance();
@@ -89,7 +92,7 @@ public class ProfileFragment extends Fragment {
             });
         }
 
-        ivAvatar.setOnClickListener(new View.OnClickListener() {
+        userPageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // Navigate to UserPageFragment

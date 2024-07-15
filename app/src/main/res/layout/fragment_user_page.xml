@@ -23,7 +23,7 @@
 
 
     <ImageView
-        android:id="@+id/imageViewUserAvatar"
+        android:id="@+id/user_Avatar"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_marginStart="30dp"
