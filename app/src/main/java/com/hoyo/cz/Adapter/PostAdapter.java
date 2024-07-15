@@ -38,7 +38,10 @@ import com.hoyo.cz.Model.Post;
 import com.hoyo.cz.Model.Share;
 import com.hoyo.cz.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -167,7 +170,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
-
+    public void sortByLatestDate() {
+        // Sắp xếp postList theo ngày đăng mới nhất
+        Collections.sort(postList, new Comparator<Post>() {
+            @Override
+            public int compare(Post post1, Post post2) {
+                // Đổi chuỗi ngày đăng về định dạng dễ so sánh (ví dụ: yyyyMMdd_HHmmss)
+                SimpleDateFormat sdf = new SimpleDateFormat("\"h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
+                try {
+                    Date date1 = sdf.parse(post1.getDayupP());
+                    Date date2 = sdf.parse(post2.getDayupP());
+                    // Sắp xếp giảm dần
+                    return date2.compareTo(date1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+        notifyDataSetChanged(); // Cập nhật lại RecyclerView sau khi sắp xếp
+    }
     private void handleLikeStatus(PostViewHolder holder, Post post) {
         if (currentUser == null) {
             return; // Người dùng chưa đăng nhập

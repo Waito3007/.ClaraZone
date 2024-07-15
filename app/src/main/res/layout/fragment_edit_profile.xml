@@ -4,26 +4,47 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp">
+
     <Button
         android:id="@+id/btback"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
         android:background="@android:color/transparent"
         android:drawableLeft="@drawable/baseline_arrow_back_ios_new_24"
         android:textColor="#FFFAFA" />
-    <ImageView
-        android:id="@+id/ivEditAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+
+    <LinearLayout
+        android:id="@+id/changeAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
-        android:src="@drawable/avatar_macdinh" />
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/ivEditAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="16dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avatar_macdinh" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Thay đổi ảnh đại diện"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/etName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:fontFamily="@font/raleway_bold"
         android:hint="Nhập tên bạn muốn thay đổi" />
 
