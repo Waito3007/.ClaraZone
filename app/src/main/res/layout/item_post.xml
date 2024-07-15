@@ -8,11 +8,17 @@
     android:background="#FFFFFF"
     android:gravity="left"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"></LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/edittext_background"
         android:orientation="horizontal">
 
         <ImageView
@@ -72,36 +78,42 @@
 
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
-        android:text="Status Title"
-        android:textColor="@android:color/black"
-        android:textSize="16sp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/content"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="8dp"
+            android:text="Status Title"
+            android:textColor="@android:color/black"
+            android:textSize="16sp" />
 
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
-        android:src="@drawable/avatar_macdinh" />
+        <ImageView
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:src="@drawable/avatar_macdinh" />
+    </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="493dp">
 
         <Button
             android:id="@+id/btnLike"
-            android:layout_width="85dp"
+            android:layout_width="62dp"
             android:layout_height="51dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
@@ -115,15 +127,29 @@
             android:id="@+id/btnComment"
             android:layout_width="65dp"
             android:layout_height="41dp"
-            android:layout_marginEnd="170dp"
+            android:layout_marginEnd="60dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/ic_comment"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toStartOf="@+id/btnShare"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
+        <Button
+            android:id="@+id/btnShare"
+            android:layout_width="65dp"
+            android:layout_height="41dp"
+            android:layout_marginEnd="36dp"
+            android:background="@android:color/transparent"
+            android:backgroundTint="@android:color/transparent"
+            android:drawableLeft="@drawable/share_ic"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

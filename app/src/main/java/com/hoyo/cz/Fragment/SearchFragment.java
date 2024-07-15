@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 
 import androidx.annotation.NonNull;
@@ -35,6 +34,7 @@ public class SearchFragment extends Fragment {
     private AccountAdapter accountAdapter;
     private List<Account> accountList;
     private List<Account> filteredAccountList;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -47,7 +47,8 @@ public class SearchFragment extends Fragment {
         accountList = new ArrayList<>();
         filteredAccountList = new ArrayList<>();
 
-        accountAdapter = new AccountAdapter(filteredAccountList);
+        // Sử dụng context của Fragment khi tạo adapter
+        accountAdapter = new AccountAdapter(getContext(), filteredAccountList);
         rvSearchResults.setAdapter(accountAdapter);
 
         loadAccount();
@@ -79,7 +80,7 @@ public class SearchFragment extends Fragment {
                     Account account = dataSnapshot.getValue(Account.class);
                     if (account != null) {
                         accountList.add(account);
-                        Log.d("FirebaseData", "Account loaded" + account.getNameUser());
+                        Log.d("FirebaseData", "Account loaded: " + account.getNameUser());
                     } else {
                         Log.d("FirebaseData", "Null account object found.");
                     }

@@ -29,14 +29,19 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
 import com.hoyo.cz.Activity.PostDetailActivity;
+import com.hoyo.cz.Activity.UDPageActivity;
 import com.hoyo.cz.Fragment.OptionsFragment;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.Model.Follow;
 import com.hoyo.cz.Model.Like;
 import com.hoyo.cz.Model.Post;
+import com.hoyo.cz.Model.Share;
 import com.hoyo.cz.R;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -68,6 +73,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
+
+
         Post post = postList.get(position);
 
         // Load post details
@@ -99,6 +106,15 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             // Xử lý sự kiện khi nhấn nút Bình luận
         });
 
+        holder.btnShare.setOnClickListener(v -> handleSharePost(post));
+
+        // Xử lý sự kiện khi nhấn nút Menu Options
+        // Kiểm tra nếu người dùng là chủ bài viết
+        if (currentUser != null && (post.getUid().equals(currentUser.getUid()))) {
+            holder.menuOptions.setVisibility(View.VISIBLE);
+        } else {
+            holder.menuOptions.setVisibility(View.GONE);
+        }
         holder.menuOptions.setOnClickListener(v -> {
             OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
             optionsFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "OptionsFragment");
@@ -109,9 +125,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             intent.putExtra("postId", post.getPid());
             context.startActivity(intent);
         });
-    }
 
-    private void loadUserDetails(PostViewHolder holder, Post post) {
+        //Xem trang cá nhân người dùng vừa ấn.
+        holder.imageViewUserAvatar.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UDPageActivity.class);
+            intent.putExtra("userId", post.getUid());
+            context.startActivity(intent);
+        });
+
+        holder.nameUser.setOnClickListener(v -> {
+            Intent intent = new Intent(context, UDPageActivity.class);
+            intent.putExtra("userId", post.getUid());
+            context.startActivity(intent);
+        });
+    }
+    public void loadUserDetails(PostViewHolder holder, Post post) {
         accountsRef.child(post.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -126,7 +154,8 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             .error(R.drawable.error_image)
                             .into(holder.imageViewUserAvatar);
 
-                    if (currentUser != null && currentUser.getUid().equals(post.getUid())) {
+                    // Kiểm tra xem người dùng có phải là admin không
+                    if (currentUser != null && (currentUser.getUid().equals(post.getUid()) || account.isAdmin())) {
                         holder.menuOptions.setVisibility(View.VISIBLE);
                     } else {
                         holder.menuOptions.setVisibility(View.GONE);
@@ -141,6 +170,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
+    public void sortByLatestDate() {
+        // Sắp xếp postList theo ngày đăng mới nhất
+        Collections.sort(postList, new Comparator<Post>() {
+            @Override
+            public int compare(Post post1, Post post2) {
+                // Đổi chuỗi ngày đăng về định dạng dễ so sánh (ví dụ: yyyyMMdd_HHmmss)
+                SimpleDateFormat sdf = new SimpleDateFormat("\"h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
+                try {
+                    Date date1 = sdf.parse(post1.getDayupP());
+                    Date date2 = sdf.parse(post2.getDayupP());
+                    // Sắp xếp giảm dần
+                    return date2.compareTo(date1);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                return 0;
+            }
+        });
+        notifyDataSetChanged(); // Cập nhật lại RecyclerView sau khi sắp xếp
+    }
     private void handleLikeStatus(PostViewHolder holder, Post post) {
         if (currentUser == null) {
             return; // Người dùng chưa đăng nhập
@@ -266,6 +315,32 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         });
     }
 
+    private void handleSharePost(Post post) {
+        if (currentUser == null) {
+            return; // Người dùng chưa đăng nhập
+        }
+
+        String sid = FirebaseDatabase.getInstance().getReference("share").push().getKey();
+        String pid = post.getPid();
+        String timestamp = getCurrentTimestamp();
+
+        String uid = currentUser.getUid();
+        boolean statusShare = true; // Hoặc gán giá trị theo yêu cầu của bạn
+
+        Share newShare = new Share(sid, timestamp, uid, pid);
+
+        FirebaseDatabase.getInstance().getReference("share")
+                .child(sid)
+                .setValue(newShare)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        Toast.makeText(context, "Bài viết đã được chia sẻ", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(context, "Lỗi khi chia sẻ bài viết", Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
     private String getCurrentTimestamp() {
         SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
         return sdf.format(new Date());
@@ -317,6 +392,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     }
 
     public static class PostViewHolder extends RecyclerView.ViewHolder {
+         Button btnShare;
         ImageView imageViewUserAvatar;
         TextView nameUser;
         ImageView content;
@@ -331,6 +407,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             super(itemView);
 
             imageViewUserAvatar = itemView.findViewById(R.id.imageViewUserAvatar);
+            btnShare = itemView.findViewById(R.id.btnShare);
             nameUser = itemView.findViewById(R.id.name_user);
             content = itemView.findViewById(R.id.content);
             title = itemView.findViewById(R.id.title);

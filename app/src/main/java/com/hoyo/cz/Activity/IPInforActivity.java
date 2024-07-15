@@ -2,7 +2,6 @@ package com.hoyo.cz.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -23,12 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.R;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 
 public class IPInforActivity extends AppCompatActivity {
 

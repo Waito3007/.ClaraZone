@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/action_disable"
+        android:title="Vô hiệu" />
+    <item
+        android:id="@+id/action_edit"
+        android:title="Chỉnh sửa" />
+    <item
+        android:id="@+id/action_view_posts"
+        android:title="Bài viết đã đăng tải" />
+</menu>
