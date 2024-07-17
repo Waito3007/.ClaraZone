@@ -21,6 +21,15 @@
         android:layout_marginTop="10dp"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Thay đổi ảnh đại diện"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
         <ImageView
             android:id="@+id/ivEditAvatar"
             android:layout_width="100dp"
@@ -31,13 +40,6 @@
             android:scaleType="centerCrop"
             android:src="@drawable/avatar_macdinh" />
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Thay đổi ảnh đại diện"
-            android:textStyle="bold" />
     </LinearLayout>
 
     <EditText

@@ -1,45 +1,68 @@
 <!-- activity_ud_page.xml -->
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:id="@+id/imageViewAvatar"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_margin="16dp"
-        android:src="@drawable/avatar_macdinh" />
-
-    <TextView
-        android:id="@+id/textViewName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/imageViewAvatar"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="User Name"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
+    android:layout_height="match_parent"
+    android:orientation="vertical">
     <Button
-        android:id="@+id/btnFollow"
-        android:layout_width="wrap_content"
+        android:id="@+id/btback"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textViewName"
-        android:layout_toEndOf="@id/imageViewAvatar"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Follow" />
+        android:background="@android:color/transparent"
+        android:drawableLeft="@drawable/baseline_arrow_back_ios_new_24"
+        android:textColor="#FFFAFA" />
+    <LinearLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="148dp"
+        android:background="@drawable/border"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imageViewAvatar"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
+            android:src="@drawable/avatar_macdinh" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:text="User Name"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnFollow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:background="#000000"
+                android:text="Follow" />
+        </LinearLayout>
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPosts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/btnFollow"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="6dp"
         android:clipToPadding="false"
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         android:scrollbars="vertical" />
 
-</RelativeLayout>
+</LinearLayout>

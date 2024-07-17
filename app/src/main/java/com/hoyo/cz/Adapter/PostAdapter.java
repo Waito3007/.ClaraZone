@@ -109,23 +109,21 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
         holder.btnShare.setOnClickListener(v -> handleSharePost(post));
 
         // Xử lý sự kiện khi nhấn nút Menu Options
-        // Kiểm tra nếu người dùng là chủ bài viết
-        if (currentUser != null && (post.getUid().equals(currentUser.getUid()))) {
-            holder.menuOptions.setVisibility(View.VISIBLE);
-        } else {
-            holder.menuOptions.setVisibility(View.GONE);
-        }
+        holder.menuOptions.setVisibility(View.VISIBLE);
         holder.menuOptions.setOnClickListener(v -> {
             OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
             optionsFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "OptionsFragment");
         });
-
-        holder.itemView.setOnClickListener(v -> {
+//        holder.itemView.setOnClickListener(v -> {
+//            Intent intent = new Intent(context, PostDetailActivity.class);
+//            intent.putExtra("postId", post.getPid());
+//            context.startActivity(intent);
+//        });
+        holder.btnComment.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("postId", post.getPid());
             context.startActivity(intent);
         });
-
         //Xem trang cá nhân người dùng vừa ấn.
         holder.imageViewUserAvatar.setOnClickListener(v -> {
             Intent intent = new Intent(context, UDPageActivity.class);
@@ -153,13 +151,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             .placeholder(R.drawable.placeholder_image)
                             .error(R.drawable.error_image)
                             .into(holder.imageViewUserAvatar);
-
-                    // Kiểm tra xem người dùng có phải là admin không
-                    if (currentUser != null && (currentUser.getUid().equals(post.getUid()) || account.isAdmin())) {
-                        holder.menuOptions.setVisibility(View.VISIBLE);
-                    } else {
-                        holder.menuOptions.setVisibility(View.GONE);
-                    }
                 }
             }
 
@@ -356,9 +347,9 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
 
     private void updateFollowButton(Button btnFollow, boolean isFollowing) {
         if (isFollowing) {
-            btnFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_follow, 0, 0, 0);
-        } else {
             btnFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_wasfollow, 0, 0, 0);
+        } else {
+            btnFollow.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_follow, 0, 0, 0);
         }
     }
 

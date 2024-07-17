@@ -39,4 +39,11 @@
 
     </LinearLayout>
 
+    <Button
+        android:id="@+id/btnBan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Vô hiệu"
+        android:visibility="gone"/>
+
 </LinearLayout>

@@ -56,7 +56,6 @@ public class MainActivity extends AppCompatActivity {
                         initMainActivity();
                     }
                 }
-
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {}
             });
@@ -76,9 +75,10 @@ public class MainActivity extends AppCompatActivity {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_search) {
                 // Chuyển tới AdminPageActivity thay vì SearchFragment
-                Intent intent = new Intent(MainActivity.this, AdminPageActivity.class);
-                startActivity(intent);
-                return true;
+//                Intent intent = new Intent(MainActivity.this, AdminPageActivity.class);
+//                startActivity(intent);
+//                return true;
+                  selectedFragment = new SearchFragment();
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }

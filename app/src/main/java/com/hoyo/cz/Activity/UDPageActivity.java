@@ -2,6 +2,7 @@ package com.hoyo.cz.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,7 +34,7 @@ public class UDPageActivity extends AppCompatActivity {
 
     private ImageView imageViewAvatar;
     private TextView textViewName;
-    private Button btnFollow;
+    private Button btnFollow,btBack;
     private RecyclerView recyclerViewPosts;
 
     private DatabaseReference accountRef;
@@ -53,24 +54,28 @@ public class UDPageActivity extends AppCompatActivity {
         imageViewAvatar = findViewById(R.id.imageViewAvatar);
         textViewName = findViewById(R.id.textViewName);
         btnFollow = findViewById(R.id.btnFollow);
+        btBack = findViewById(R.id.btback);
         recyclerViewPosts = findViewById(R.id.recyclerViewPosts);
-
         accountRef = FirebaseDatabase.getInstance().getReference("account");
         followRef = FirebaseDatabase.getInstance().getReference("follow");
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
         // Nhận userId từ Intent
         userId = getIntent().getStringExtra("userId");
-
         postList = new ArrayList<>();
         postAdapter = new PostAdapter(this, postList);
         recyclerViewPosts.setLayoutManager(new LinearLayoutManager(this));
         recyclerViewPosts.setAdapter(postAdapter);
-
         loadUserData();
         loadUserPosts();
-
         btnFollow.setOnClickListener(v -> toggleFollow());
+
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Quay về trang trước đó
+                finish();
+            }
+        });
     }
 
     private void loadUserData() {
@@ -204,9 +209,9 @@ public class UDPageActivity extends AppCompatActivity {
     private void updateFollowButton(boolean isFollowing) {
         // Cập nhật giao diện nút follow
         if (isFollowing) {
-            btnFollow.setText("Unfollow");
+            btnFollow.setText("Bỏ theo dõi");
         } else {
-            btnFollow.setText("Follow");
+            btnFollow.setText("Theo dõi");
         }
     }
 }

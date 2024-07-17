@@ -29,8 +29,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tạo bài viết"
-                android:textSize="14sp">
-            </TextView>
+                android:textColor="@color/black"
+                android:textSize="14sp"></TextView>
 
             <!-- Button to Post -->
             <Button
@@ -38,9 +38,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="170dp"
-                android:background="@drawable/corner_button"
+                android:background="@drawable/cursor"
+                android:backgroundTint="@color/black"
                 android:text="ĐĂNG"
-                android:textColor="@android:color/white" />
+                android:textColor="@android:color/white"
+                app:rippleColor="#000000" />
 
         </LinearLayout>
 
@@ -80,14 +82,16 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_weight="1"
-                    android:text="Tên Người Dùng" />
+                    android:text="Tên Người Dùng"
+                    android:textColor="@color/black" />
 
                 <CheckBox
                     android:id="@+id/checkbox_privacy"
                     android:layout_width="100dp"
                     android:layout_height="50dp"
                     android:layout_marginStart="10dp"
-                    android:text="Riêng Tư" />
+                    android:text="Riêng Tư"
+                    android:textColor="@color/black" />
             </LinearLayout>
 
         </LinearLayout>
@@ -124,17 +128,17 @@
             android:visibility="gone" />
 
         <!-- Button to Choose Media -->
+
+        <!-- EditText for Content -->
         <Button
             android:id="@+id/choosemedia_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="10dp"
-            android:background="@drawable/corner_button"
             android:drawableLeft="@drawable/image_svgrepo_com"
             android:text="Thêm ảnh" />
 
-        <!-- EditText for Content -->
         <EditText
             android:id="@+id/edit_text_content"
             android:layout_width="match_parent"

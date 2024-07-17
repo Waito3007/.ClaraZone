@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="start"
-    android:background="#FFFFFF"
     android:gravity="left"
     android:orientation="vertical"
     android:padding="10dp">
@@ -18,7 +17,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/edittext_background"
         android:orientation="horizontal">
 
         <ImageView
@@ -97,10 +95,9 @@
             android:id="@+id/content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:scaleType="centerCrop"
             android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/avatar_macdinh" />
+            android:visibility="gone" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,9 +122,9 @@
 
         <Button
             android:id="@+id/btnComment"
-            android:layout_width="65dp"
-            android:layout_height="41dp"
-            android:layout_marginEnd="60dp"
+            android:layout_width="67dp"
+            android:layout_height="46dp"
+            android:layout_marginEnd="160dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/ic_comment"
@@ -135,23 +132,30 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnShare"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.4" />
 
         <Button
             android:id="@+id/btnShare"
             android:layout_width="65dp"
             android:layout_height="41dp"
-            android:layout_marginEnd="36dp"
+            android:layout_marginEnd="4dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
             android:drawableLeft="@drawable/share_ic"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@color/black"
+        android:gravity="center" />
 
 
 </LinearLayout>

@@ -88,11 +88,9 @@ public class SignUpActivity extends AppCompatActivity {
     private void signUpUser() {
         // Hiển thị vòng loading
         showLoading();
-
         String email = edEmail.getText().toString().trim();
         String password = edPassword.getText().toString().trim();
         String confirmPassword = edConfirmPassword.getText().toString().trim();
-
         // Kiểm tra mật khẩu có ít nhất 8 kí tự và chứa kí tự đặc biệt hay không
         if (!isPasswordValid(password)) {
             Toast.makeText(SignUpActivity.this, "Mật khẩu phải có ít nhất 8 kí tự và chứa kí tự đặc biệt", Toast.LENGTH_SHORT).show();
@@ -100,14 +98,12 @@ public class SignUpActivity extends AppCompatActivity {
             hideLoading();
             return;
         }
-
         if (!password.equals(confirmPassword)) {
             Toast.makeText(SignUpActivity.this, "Mật khẩu và xác nhận mật khẩu không khớp", Toast.LENGTH_SHORT).show();
             // Ẩn vòng loading nếu có lỗi xảy ra
             hideLoading();
             return;
         }
-
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override

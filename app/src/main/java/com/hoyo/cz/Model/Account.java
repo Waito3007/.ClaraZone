@@ -6,7 +6,8 @@ public class Account {
     private String password;
     private String avatarUser;
     private String nameUser;
-    private boolean isAdmin; // phan quyen
+    private boolean isAdmin; // phân quyền
+    private boolean statusBan; // trạng thái bị vô hiệu
 
     public Account() {
         // Cần phải có constructor không tham số để Firebase có thể chuyển đổi dữ liệu từ database
@@ -17,13 +18,14 @@ public class Account {
         this.email = email;
     }
 
-    public Account(String uid, String email, String password, String avatarUser, String nameUser, boolean isAdmin) {
+    public Account(String uid, String email, String password, String avatarUser, String nameUser, boolean isAdmin, boolean statusBan) {
         this.uid = uid;
         this.email = email;
         this.password = password;
         this.avatarUser = avatarUser;
         this.nameUser = nameUser;
         this.isAdmin = isAdmin;
+        this.statusBan = statusBan;
     }
 
     public String getUid() {
@@ -72,5 +74,13 @@ public class Account {
 
     public void setAdmin(boolean admin) {
         isAdmin = admin;
+    }
+
+    public boolean isStatusBan() {
+        return statusBan;
+    }
+
+    public void setStatusBan(boolean statusBan) {
+        this.statusBan = statusBan;
     }
 }

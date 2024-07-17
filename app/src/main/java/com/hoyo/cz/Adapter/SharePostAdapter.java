@@ -71,7 +71,6 @@ public class SharePostAdapter extends RecyclerView.Adapter<SharePostAdapter.Shar
                 if (post != null) {
                     holder.postTitle.setText(post.getTitleP());
                     holder.postDate.setText(post.getDayupP());
-
                     String mediaUrl = post.getContentP();
                     if (mediaUrl != null && !mediaUrl.isEmpty()) {
                         holder.postImage.setVisibility(View.VISIBLE);
@@ -82,7 +81,6 @@ public class SharePostAdapter extends RecyclerView.Adapter<SharePostAdapter.Shar
                     } else {
                         holder.postContent.setVisibility(View.GONE);
                     }
-
                     // Lấy thông tin người đăng bài
                     mDatabase.child("account").child(post.getUid()).get().addOnCompleteListener(userTask -> {
                         if (userTask.isSuccessful() && userTask.getResult() != null) {

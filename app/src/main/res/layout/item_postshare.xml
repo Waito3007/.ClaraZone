@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="7dp"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -11,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@drawable/border"
         android:orientation="horizontal"
         android:padding="8dp">
 
@@ -38,6 +40,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="10dp"
                     android:text="Shared User Name"
+                    android:textColor="#000000"
                     android:textStyle="bold" />
 
                 <TextView
@@ -62,21 +65,14 @@
 
     </LinearLayout>
 
-    <!-- Thông tin bài viết được chia sẻ -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginStart="15sp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/borderinput"
         android:orientation="vertical"
         android:padding="8dp">
-
-
-        <ImageView
-            android:id="@+id/postImage"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:layout_margin="14dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/error_image" />
 
 
         <LinearLayout
@@ -104,6 +100,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginStart="8dp"
                     android:text="Post User Name"
+                    android:textColor="@color/black"
                     android:textStyle="bold" />
 
                 <TextView
@@ -114,28 +111,29 @@
                     android:text="dd/mm/yy"
                     android:textColor="@color/black" />
 
+                <TextView
+                    android:id="@+id/postTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:text="Post Title"
+                    android:textStyle="bold" />
+
             </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/postTitle"
+        <ImageView
+            android:id="@+id/postImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:text="Post Title"
-            android:textStyle="bold" />
-    </LinearLayout>
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="16dp"
-        tools:layout_editor_absoluteY="493dp">
+            android:layout_height="200dp"
+            android:layout_margin="14dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/error_image" />
 
         <Button
             android:id="@+id/btnLike"
-            android:layout_width="85dp"
+            android:layout_width="67dp"
             android:layout_height="51dp"
             android:background="@android:color/transparent"
             android:backgroundTint="@android:color/transparent"
@@ -157,7 +155,15 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteY="0dp" />
+    </LinearLayout>
 
+    <TextView
+        android:layout_width="150dp"
+        android:layout_height="5dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="5dp"
+        android:background="@color/input"
+        android:gravity="center" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Thông tin bài viết được chia sẻ -->
 </LinearLayout>
