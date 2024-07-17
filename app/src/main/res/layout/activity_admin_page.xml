@@ -1,18 +1,41 @@
-<?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:queryHint="Search by name or email"
-        android:iconifiedByDefault="false"/>
+        android:iconifiedByDefault="false"
+        android:queryHint="Search by name or email" >
+
+    </SearchView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnShowActive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hiện tài khoản hoạt động" />
+
+        <Button
+            android:id="@+id/btnShowBanned"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Hiện tài khoản bị vô hiệu" />
+    </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewAccounts"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/searchView"/>
-</RelativeLayout>
+        android:layout_height="match_parent" />
+
+</LinearLayout>

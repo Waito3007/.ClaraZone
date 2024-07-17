@@ -1,13 +1,17 @@
-package com.hoyo.cz.Activity;// AdminPageActivity.java
+package com.hoyo.cz.Activity;
 
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SearchView;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -26,7 +30,6 @@ public class AdminPageActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private AccountAdapter adapter;
     private List<Account> accountList;
-
     private DatabaseReference accountsRef;
 
     @Override
@@ -52,10 +55,28 @@ public class AdminPageActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 return false;
             }
+
             @Override
             public boolean onQueryTextChange(String newText) {
                 loadAccounts(newText);
                 return true;
+            }
+        });
+
+        Button btnShowActive = findViewById(R.id.btnShowActive);
+        Button btnShowBanned = findViewById(R.id.btnShowBanned);
+
+        btnShowActive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadAccountsByStatus(false); // Hiển thị tài khoản chưa bị vô hiệu
+            }
+        });
+
+        btnShowBanned.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadAccountsByStatus(true); // Hiển thị tài khoản bị vô hiệu
             }
         });
     }
@@ -67,6 +88,29 @@ public class AdminPageActivity extends AppCompatActivity {
         } else {
             query = accountsRef.orderByChild("nameUser").startAt(searchText).endAt(searchText + "\uf8ff");
         }
+
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                accountList.clear();
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Account account = ds.getValue(Account.class);
+                    if (account != null) {
+                        accountList.add(account);
+                    }
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(AdminPageActivity.this, "Failed to load accounts: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void loadAccountsByStatus(boolean statusBan) {
+        Query query = accountsRef.orderByChild("statusBan").equalTo(statusBan);
 
         query.addValueEventListener(new ValueEventListener() {
             @Override
