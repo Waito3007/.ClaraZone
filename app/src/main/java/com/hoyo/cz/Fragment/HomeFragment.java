@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     public HomeFragment() {
         // Required empty public constructor
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class HomeFragment extends Fragment {
         });
         return view;
     }
+
     private void loadPosts() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("posts");
         reference.addValueEventListener(new ValueEventListener() {
@@ -69,7 +71,9 @@ public class HomeFragment extends Fragment {
                         }
                     }
                 }
-                postAdapter.notifyDataSetChanged();
+
+                // Sau khi tải dữ liệu, sắp xếp theo ngày giảm dần
+                postAdapter.sortByDateDescending();
             }
 
             @Override

@@ -74,13 +74,11 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     @Override
     public void onBindViewHolder(@NonNull PostViewHolder holder, int position) {
 
-
         Post post = postList.get(position);
-
         // Load post details
         holder.dayPost.setText(post.getDayupP());
         holder.title.setText(post.getTitleP());
-
+        holder.likeCountTextView.setText(String.valueOf(post.getLikeP()));
         // Load post content (image)
         String mediaUrl = post.getContentP();
         if (mediaUrl != null && !mediaUrl.isEmpty()) {
@@ -160,27 +158,27 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
     }
-
-    public void sortByLatestDate() {
-        // Sắp xếp postList theo ngày đăng mới nhất
+    public void sortByDateDescending() {
         Collections.sort(postList, new Comparator<Post>() {
             @Override
             public int compare(Post post1, Post post2) {
-                // Đổi chuỗi ngày đăng về định dạng dễ so sánh (ví dụ: yyyyMMdd_HHmmss)
-                SimpleDateFormat sdf = new SimpleDateFormat("\"h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
+                SimpleDateFormat sdf = new SimpleDateFormat("h'h' m'm' 'ngày' d/M/yyyy", Locale.getDefault());
                 try {
                     Date date1 = sdf.parse(post1.getDayupP());
                     Date date2 = sdf.parse(post2.getDayupP());
-                    // Sắp xếp giảm dần
-                    return date2.compareTo(date1);
+                    return date2.compareTo(date1); // Sắp xếp giảm dần theo ngày
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
                 return 0;
             }
         });
-        notifyDataSetChanged(); // Cập nhật lại RecyclerView sau khi sắp xếp
+
+        notifyDataSetChanged(); // Cập nhật RecyclerView sau khi sắp xếp
     }
+
+
+
     private void handleLikeStatus(PostViewHolder holder, Post post) {
         if (currentUser == null) {
             return; // Người dùng chưa đăng nhập
@@ -242,7 +240,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             }
         });
     }
-
     private void handleFollowStatus(PostViewHolder holder, Post post) {
         if (currentUser == null) {
             return; // Người dùng chưa đăng nhập
@@ -385,7 +382,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
     public static class PostViewHolder extends RecyclerView.ViewHolder {
          Button btnShare;
         ImageView imageViewUserAvatar;
-        TextView nameUser;
+        TextView nameUser,likeCountTextView;
         ImageView content;
         TextView title;
         TextView dayPost;
@@ -400,6 +397,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             imageViewUserAvatar = itemView.findViewById(R.id.imageViewUserAvatar);
             btnShare = itemView.findViewById(R.id.btnShare);
             nameUser = itemView.findViewById(R.id.name_user);
+            likeCountTextView = itemView.findViewById(R.id.like_count);
             content = itemView.findViewById(R.id.content);
             title = itemView.findViewById(R.id.title);
             dayPost = itemView.findViewById(R.id.day_post);
