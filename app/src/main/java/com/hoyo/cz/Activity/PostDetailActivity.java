@@ -48,6 +48,7 @@ public class PostDetailActivity extends AppCompatActivity {
 
     private ImageView addImageComment, sendComment;
     private EditText editTextComment;
+    private Button btBack;
     private RecyclerView recyclerViewComments;
     private CommentAdapter commentAdapter;
     private List<Comment> commentList;
@@ -60,14 +61,20 @@ public class PostDetailActivity extends AppCompatActivity {
 
         addImageComment = findViewById(R.id.addImageComment);
         sendComment = findViewById(R.id.sendComment);
+        btBack = findViewById(R.id.btback);
         editTextComment = findViewById(R.id.editTextComment);
         recyclerViewComments = findViewById(R.id.recyclerViewComments);
-
         postId = getIntent().getStringExtra("postId");
 
         setupPostAdapter();
         setupComments();
-
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Quay về trang trước đó
+                finish();
+            }
+        });
         addImageComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

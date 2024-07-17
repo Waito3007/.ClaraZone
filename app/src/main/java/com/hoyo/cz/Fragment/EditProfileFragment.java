@@ -47,7 +47,7 @@ public class EditProfileFragment extends Fragment {
     private LinearLayout changeAvatarBtn;
     private ImageView ivAvatar;
     private EditText etName;
-    private Button btSave;
+    private Button btSave,btBack;
     private ProgressBar progressBar;
 
     private FirebaseAuth mAuth;
@@ -63,6 +63,7 @@ public class EditProfileFragment extends Fragment {
         ivAvatar = view.findViewById(R.id.ivEditAvatar);
         etName = view.findViewById(R.id.etName);
         btSave = view.findViewById(R.id.btnSave);
+        btBack = view.findViewById(R.id.btback);
         progressBar = view.findViewById(R.id.progressBar);
 
         mAuth = FirebaseAuth.getInstance();
@@ -107,7 +108,13 @@ public class EditProfileFragment extends Fragment {
                 updateProfile();
             }
         });
-
+        btBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Xử lý khi người dùng click vào nút back
+                getActivity().onBackPressed(); // Quay lại màn hình trước đó
+            }
+        });
         return view;
     }
 
