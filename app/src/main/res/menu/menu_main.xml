@@ -10,6 +10,10 @@
         android:title="Search"
         android:icon="@drawable/search"/>
     <item
+        android:id="@+id/nav_saved_posts"
+        android:icon="@drawable/ic_save"
+        android:title="Saved Posts" />
+    <item
         android:id="@+id/nav_profile"
         android:title="Profile"
         android:icon="@drawable/profile"

@@ -28,6 +28,7 @@ import com.google.firebase.database.MutableData;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.Transaction;
 import com.google.firebase.database.ValueEventListener;
+import com.hoyo.cz.Activity.PersonalPageActivity;
 import com.hoyo.cz.Activity.PostDetailActivity;
 import com.hoyo.cz.Activity.UDPageActivity;
 import com.hoyo.cz.Fragment.OptionsFragment;
@@ -112,28 +113,26 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
             OptionsFragment optionsFragment = new OptionsFragment(post.getPid());
             optionsFragment.show(((AppCompatActivity) context).getSupportFragmentManager(), "OptionsFragment");
         });
-//        holder.itemView.setOnClickListener(v -> {
-//            Intent intent = new Intent(context, PostDetailActivity.class);
-//            intent.putExtra("postId", post.getPid());
-//            context.startActivity(intent);
-//        });
         holder.btnComment.setOnClickListener(v -> {
             Intent intent = new Intent(context, PostDetailActivity.class);
             intent.putExtra("postId", post.getPid());
             context.startActivity(intent);
         });
-        //Xem trang cá nhân người dùng vừa ấn.
-        holder.imageViewUserAvatar.setOnClickListener(v -> {
-            Intent intent = new Intent(context, UDPageActivity.class);
-            intent.putExtra("userId", post.getUid());
+        // Kiểm tra xem người dùng đang xem profile của mình không
+        boolean isOwnProfile = currentUser != null && post.getUid().equals(currentUser.getUid());
+        // Xử lý sự kiện click vào avatar hoặc tên người dùng
+        View.OnClickListener userProfileClickListener = v -> {
+            Intent intent;
+            if (isOwnProfile) {
+                intent = new Intent(context, PersonalPageActivity.class);
+            } else {
+                intent = new Intent(context, UDPageActivity.class);
+                intent.putExtra("userId", post.getUid());
+            }
             context.startActivity(intent);
-        });
-
-        holder.nameUser.setOnClickListener(v -> {
-            Intent intent = new Intent(context, UDPageActivity.class);
-            intent.putExtra("userId", post.getUid());
-            context.startActivity(intent);
-        });
+        };
+        holder.imageViewUserAvatar.setOnClickListener(userProfileClickListener);
+        holder.nameUser.setOnClickListener(userProfileClickListener);
     }
     public void loadUserDetails(PostViewHolder holder, Post post) {
         accountsRef.child(post.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

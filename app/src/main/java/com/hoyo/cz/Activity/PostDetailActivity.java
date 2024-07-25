@@ -59,6 +59,7 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
 
+
         addImageComment = findViewById(R.id.addImageComment);
         sendComment = findViewById(R.id.sendComment);
         btBack = findViewById(R.id.btback);

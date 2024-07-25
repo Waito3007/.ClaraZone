@@ -1,16 +1,13 @@
-package com.hoyo.cz.Fragment;
+package com.hoyo.cz.Activity;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,7 +29,7 @@ import com.hoyo.cz.R;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserPageFragment extends Fragment {
+public class PersonalPageActivity extends AppCompatActivity {
 
     private TextView userNameTextView;
     private TextView timelineBtn;
@@ -46,15 +43,17 @@ public class UserPageFragment extends Fragment {
     private SharePostAdapter sharePostAdapter;
     private FirebaseUser currentUser;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_user_page, container, false);
-        userNameTextView = view.findViewById(R.id.user_name);
-        userAvatar = view.findViewById(R.id.user_Avatar);
-        timelineBtn = view.findViewById(R.id.timeline_btn);
-        sharePostBtn = view.findViewById(R.id.sharePost_btn);
-        postsRecyclerView = view.findViewById(R.id.recycler_view_posts);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_personal_page);
+
+        userNameTextView = findViewById(R.id.user_name);
+        userAvatar = findViewById(R.id.user_Avatar);
+        timelineBtn = findViewById(R.id.timeline_btn);
+        sharePostBtn = findViewById(R.id.sharePost_btn);
+        postsRecyclerView = findViewById(R.id.recycler_view_posts);
+
         currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
             String userId = currentUser.getUid();
@@ -68,7 +67,7 @@ public class UserPageFragment extends Fragment {
                     Account account = snapshot.getValue(Account.class);
                     if (account != null) {
                         userNameTextView.setText(account.getNameUser());
-                        Glide.with(requireContext())
+                        Glide.with(PersonalPageActivity.this)
                                 .load(account.getAvatarUser() != null ? account.getAvatarUser() : R.drawable.avatar_macdinh)
                                 .circleCrop()
                                 .placeholder(R.drawable.avatar_macdinh)
@@ -79,15 +78,15 @@ public class UserPageFragment extends Fragment {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
-                    Toast.makeText(getActivity(), "Failed to load user data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(PersonalPageActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
                 }
             });
 
             postList = new ArrayList<>();
             shareList = new ArrayList<>();
-            postsRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            postAdapter = new PostAdapter(getActivity(), postList);
-            sharePostAdapter = new SharePostAdapter(shareList, getActivity());
+            postsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+            postAdapter = new PostAdapter(this, postList);
+            sharePostAdapter = new SharePostAdapter(shareList, this);
             postsRecyclerView.setAdapter(postAdapter);
 
             loadUserPosts(userId);
@@ -95,8 +94,6 @@ public class UserPageFragment extends Fragment {
             timelineBtn.setOnClickListener(v -> loadUserPosts(userId));
             sharePostBtn.setOnClickListener(v -> loadUserSharedPosts(userId));
         }
-
-        return view;
     }
 
     private void loadUserPosts(String userId) {
@@ -114,7 +111,7 @@ public class UserPageFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Failed to load posts", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalPageActivity.this, "Failed to load posts", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -134,7 +131,7 @@ public class UserPageFragment extends Fragment {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-                Toast.makeText(getActivity(), "Failed to load shared posts", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PersonalPageActivity.this, "Failed to load shared posts", Toast.LENGTH_SHORT).show();
             }
         });
     }

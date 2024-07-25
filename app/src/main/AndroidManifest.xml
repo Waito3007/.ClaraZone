@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <application
         android:allowBackup="true"
@@ -18,18 +19,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CZ"
         tools:targetApi="31">
-<!--        <activity-->
-<!--            android:name=".Activity.SplashActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".Activity.PersonalPageActivity"
+            android:exported="false" />
+        <!-- Activity SplashScreen được khởi động đầu tiên -->
         <activity
             android:name=".Activity.SplashActivity"
-            android:theme="@style/AppTheme"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity> <!-- Các activity khác -->
         <activity
             android:name=".Activity.BanActivity"
             android:exported="false" />
@@ -56,18 +59,16 @@
             android:exported="false" />
         <activity
             android:name=".Activity.SignInActivity"
-            android:exported="false" />
+            android:exported="false" /> <!-- Activity Main không có intent-filter -->
         <activity
             android:name=".Activity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".Activity.SignUpActivity" />
-        <activity android:name=".Activity.PostActivity" />
+            android:exported="false" />
+        <activity
+            android:name=".Activity.SignUpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Activity.PostActivity"
+            android:exported="false" />
 
         <meta-data
             android:name="preloaded_fonts"

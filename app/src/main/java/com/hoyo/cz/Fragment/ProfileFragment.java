@@ -25,6 +25,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hoyo.cz.Activity.AdminPageActivity;
+import com.hoyo.cz.Activity.PersonalPageActivity; // Import PersonalPageActivity
 import com.hoyo.cz.Activity.SignInActivity;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.R;
@@ -95,11 +96,8 @@ public class ProfileFragment extends Fragment {
         userPageLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Navigate to UserPageFragment
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, new UserPageFragment());
-                transaction.addToBackStack(null);
-                transaction.commit();
+                // Navigate to PersonalPageActivity
+                startActivity(new Intent(requireContext(), PersonalPageActivity.class));
             }
         });
 

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Thêm RecyclerView hoặc các thành phần UI khác để hiển thị bài viết đã lưu -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Đã lưu"
+        android:textColor="@color/black"
+        android:layout_marginLeft="24sp"
+        android:textSize="30sp" />
+
+    <!-- Ví dụ một RecyclerView để hiển thị danh sách bài viết đã lưu -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_marginTop="24sp"
+        android:id="@+id/recycler_view_saved_posts"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

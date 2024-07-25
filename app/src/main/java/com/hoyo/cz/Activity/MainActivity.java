@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.hoyo.cz.Fragment.HomeFragment;
 import com.hoyo.cz.Fragment.ProfileFragment;
+import com.hoyo.cz.Fragment.SavedPostsFragment;
 import com.hoyo.cz.Fragment.SearchFragment;
 import com.hoyo.cz.Model.Account;
 import com.hoyo.cz.R;
@@ -74,11 +75,9 @@ public class MainActivity extends AppCompatActivity {
             if (itemId == R.id.nav_home) {
                 selectedFragment = new HomeFragment();
             } else if (itemId == R.id.nav_search) {
-                // Chuyển tới AdminPageActivity thay vì SearchFragment
-//                Intent intent = new Intent(MainActivity.this, AdminPageActivity.class);
-//                startActivity(intent);
-//                return true;
-                  selectedFragment = new SearchFragment();
+                selectedFragment = new SearchFragment();
+            } else if (itemId == R.id.nav_saved_posts) {
+                selectedFragment = new SavedPostsFragment();
             } else if (itemId == R.id.nav_profile) {
                 selectedFragment = new ProfileFragment();
             }
