@@ -69,13 +69,6 @@ public class PostDetailActivity extends AppCompatActivity {
 
         setupPostAdapter();
         setupComments();
-        btBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Quay về trang trước đó
-                finish();
-            }
-        });
         addImageComment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

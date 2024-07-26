@@ -48,6 +48,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Xem trang cá nhân"
+                android:textColor="@color/black"
                 android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>
@@ -56,13 +57,13 @@
         android:id="@+id/tvChange"
         android:layout_width="371dp"
         android:layout_height="0dp"
-        android:layout_marginTop="224dp"
-        android:background="@drawable/rounded_button"
+        android:layout_marginTop="180dp"
+        android:background="@color/white"
+        android:gravity="center"
         android:text="Tùy chỉnh thông tin hồ sơ"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.045"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -70,41 +71,14 @@
         android:id="@+id/tvAdmin"
         android:layout_width="371dp"
         android:layout_height="0dp"
-        android:layout_marginTop="568dp"
-        android:background="@drawable/rounded_button"
+        android:layout_marginTop="232dp"
+        android:background="@color/white"
         android:gravity="center"
         android:text="ADMIN"
         android:textColor="@android:color/black"
         android:textSize="20sp"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/tvreport"
-        android:layout_width="371dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="276dp"
-        android:text="Báo cáo"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/txrule"
-        android:layout_width="371dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="328dp"
-        android:text="Xem điều khoản sử dụng"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

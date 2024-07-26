@@ -141,7 +141,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                 Account account = snapshot.getValue(Account.class);
                 if (account != null) {
                     holder.nameUser.setText(account.getNameUser());
-
                     Glide.with(context)
                             .load(account.getAvatarUser() != null ? account.getAvatarUser() : R.drawable.avatar_macdinh)
                             .circleCrop()
@@ -150,7 +149,6 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.PostViewHolder
                             .into(holder.imageViewUserAvatar);
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 Log.e("PostAdapter", "Error loading user data", error.toException());

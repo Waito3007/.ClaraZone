@@ -2,6 +2,7 @@ package com.hoyo.cz.Activity;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,6 +33,7 @@ import java.util.List;
 public class PersonalPageActivity extends AppCompatActivity {
 
     private TextView userNameTextView;
+    private Button btBack;
     private TextView timelineBtn;
     private TextView sharePostBtn;
     private RecyclerView postsRecyclerView;
@@ -49,6 +51,7 @@ public class PersonalPageActivity extends AppCompatActivity {
         setContentView(R.layout.activity_personal_page);
 
         userNameTextView = findViewById(R.id.user_name);
+        btBack = findViewById(R.id.btBack);
         userAvatar = findViewById(R.id.user_Avatar);
         timelineBtn = findViewById(R.id.timeline_btn);
         sharePostBtn = findViewById(R.id.sharePost_btn);
@@ -81,7 +84,13 @@ public class PersonalPageActivity extends AppCompatActivity {
                     Toast.makeText(PersonalPageActivity.this, "Failed to load user data", Toast.LENGTH_SHORT).show();
                 }
             });
-
+            btBack.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // Quay về trang trước đó
+                    finish();
+                }
+            });
             postList = new ArrayList<>();
             shareList = new ArrayList<>();
             postsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
