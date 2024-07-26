@@ -189,7 +189,7 @@ public class SignUpActivity extends AppCompatActivity {
 
             Account userData = new Account(userId, userEmail);
             userData.setAvatarUser("https://firebasestorage.googleapis.com/v0/b/greentoon-937f6.appspot.com/o/avatars%2FGwdz6c6FAjYLKfDC3LlwaWyGWg12.jpg?alt=media&token=29a002c7-f96e-4b4c-8d96-6108ccfa6f68");
-            userData.setNameUser(user.getEmail());
+            userData.setNameUser("");
             databaseReference.child(userId).setValue(userData);
             user.sendEmailVerification()
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
